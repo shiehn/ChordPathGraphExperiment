@@ -78,7 +78,7 @@ public class ChordGraph {
         try {
             //MidiFileManager.savePatternToMidi(pattern, new File(sessionPath + "/" + fileName));
             MidiFileManager.save(new Player().getSequence(pattern), new File(sessionPath + "/" + fileName));
-            renderData.MidiURL = String.format("http://localhost:8080/midi/%s/%s", sessionID, midiId);
+            renderData.MidiURL = String.format("midi/%s/%s", sessionID, midiId);
         } catch (Exception e){
             renderData.ErrorMessage = "failed to generate Midi data";
             System.out.println("ERROR: " + e.toString());

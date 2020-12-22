@@ -81,7 +81,7 @@ export class About extends React.Component {
     }
 
     loadMidiData = async () => {
-        this.midi = await Midi.fromUrl(this.graphData.midi);
+        this.midi = await Midi.fromUrl(`${this.API_ROOT}${this.graphData.midi}`);
     }
 
     renderGraph = async () => {

@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4599abeb-6977-43df-bfb2-1682dc58be1d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/About.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/About.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +233,7 @@
       <workItem from="1608665525973" duration="1301000" />
       <workItem from="1608667114155" duration="2120000" />
       <workItem from="1608669654642" duration="3244000" />
-      <workItem from="1608680140343" duration="53000" />
+      <workItem from="1608680140343" duration="332000" />
     </task>
     <servers />
   </component>
