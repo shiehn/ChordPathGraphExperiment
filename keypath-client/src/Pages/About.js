@@ -7,7 +7,7 @@ import { Midi } from '@tonejs/midi'
 
 export class About extends React.Component {
     SESSION_ID = undefined;
-    API_ROOT = "http://localhost:8080/"
+    API_ROOT = "http://34.122.124.254:8080/"
     PATH_ORIGIN = 0;
     PATH_DESTINATION = 83;
 
