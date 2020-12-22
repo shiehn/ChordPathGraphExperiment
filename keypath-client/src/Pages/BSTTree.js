@@ -84,7 +84,7 @@ export class BSTTree extends React.Component {
 
     componentDidMount = async () => {
 
-        const treeData = await axios.get(`http://localhost:8080/tree`);
+        const treeData = await axios.get(`http://localhost:80/tree`);
         let cloned = this.cloneTree(treeData.data.root)
         let clonedTree = [JSON.parse(JSON.stringify(cloned))];
         const dimensions = this.treeContainer.getBoundingClientRect();
@@ -105,9 +105,9 @@ export class BSTTree extends React.Component {
     handleSubmit = async (event) => {
         event.preventDefault();
 
-        const addNodeResp = await axios.post(`http://localhost:8080/tree`, {'data': this.state.value});
+        const addNodeResp = await axios.post(`http://localhost:80/tree`, {'data': this.state.value});
 
-        const treeData = await axios.get(`http://localhost:8080/tree`);
+        const treeData = await axios.get(`http://localhost:80/tree`);
         let cloned = this.cloneTree(treeData.data.root)
         let clonedTree = [JSON.parse(JSON.stringify(cloned))];
         const dimensions = this.treeContainer.getBoundingClientRect();

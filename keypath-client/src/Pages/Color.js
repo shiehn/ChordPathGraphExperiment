@@ -14,7 +14,7 @@ export class Color extends React.Component {
     }
 
     componentDidMount = async () => {
-        const colorRes = await axios.get(`http://localhost:8080/colors`);
+        const colorRes = await axios.get(`http://localhost:80/colors`);
 
         if(!colorRes.data){
             return
