@@ -10,24 +10,28 @@ export class About extends React.Component {
     API_ROOT = "http://34.122.124.254:80/"
     PATH_ORIGIN = 0;
     PATH_DESTINATION = 83;
+    synthStack = []
+    midi = undefined;
+    graphData = {}
+    chordCount = 0
 
     constructor() {
         super();
 
         this.SESSION_ID = uuid();
 
-
-
-
-
-
-
         this.state = {
+            startBtn: {
+                isPlaying: false,
+                css: "start-btn-overlay-show",
+            },
             divStyle: {
                 color: 'blue',
             },
             loading: true,
             data:{
+                idkeychordmap: {},
+                chordpathids: [],
                 nodes: [
                     {
                     "id": 99,
@@ -65,10 +69,7 @@ export class About extends React.Component {
 
 
 
-    synthStack = []
-    midi = undefined;
-    graphData = {}
-    chordCount = 0
+
 
     loadGraphData = async () => {
         let max = 83;
@@ -89,6 +90,15 @@ export class About extends React.Component {
     }
 
     initAudio = async () => {
+        if(this.state.startBtn.isPlaying) {
+            return;
+        }
+
+        this.setState({...this.state, startBtn: {
+            isPlaying: true,
+            css: "start-btn-overlay-hide",
+        }})
+
         await this.loadGraphData();
         await this.loadMidiData();
         await this.startSeqence();
@@ -96,15 +106,9 @@ export class About extends React.Component {
 
         Tone.Transport.bpm.value = 60
         Tone.Transport.start();
-
     }
 
     startSeqence = async () => {
-        // Tone.Transport.stop()
-        // Tone.Transport.seconds = 0;
-
-
-        console.log("START-SEQUENCE")
         if(this.synthStack.length > 0) {
             console.log('this.synthStack.length', this.synthStack.length)
             this.synthStack[this.synthStack.length-1].unsync();
@@ -119,7 +123,6 @@ export class About extends React.Component {
 
         const track = this.midi.tracks[0];
         const notes = track.notes
-
 
         //let chordCount = 0;
         let curTime = -1;
@@ -176,6 +179,9 @@ export class About extends React.Component {
         console.log("TIME.NOW(): ", Tone.now())
         console.log("CHORD COUNT: ", this.chordCount)
 
+
+
+
         Tone.Transport.scheduleOnce(async () => {
             console.log("LOAD DATA")
             //START THE NEW PROGRESSION AT THE END OF THE LAST
@@ -230,10 +236,11 @@ export class About extends React.Component {
     }
 
     render() {
-        return <div style={this.state.divStyle}>
-            <button onClick={this.initAudio}>
-                Click me
-            </button>
+        return <div style={this.state.divStyle} className={this.state.startBtn.css} onClick={this.initAudio}>
+            <div>
+                CHORD PATH IDS: {this.state.data.chordpathids.join(",")}
+                Destination: {this.state.data.idkeychordmap[this.PATH_DESTINATION]}
+            </div>
             {
                 this.state.loading ? <div>Loading...</div> : <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error

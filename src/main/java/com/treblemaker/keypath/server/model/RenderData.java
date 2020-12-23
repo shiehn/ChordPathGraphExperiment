@@ -1,9 +1,11 @@
 package com.treblemaker.keypath.server.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import play.mvc.WebSocket;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RenderData {
     @JsonProperty("nodes")
@@ -24,10 +26,18 @@ public class RenderData {
     @JsonProperty("error")
     public String ErrorMessage;
 
-    public RenderData(List<IdKeyNote> nodes, List<Link> links, Integer origin, Integer destination) {
+    @JsonProperty("idkeychordmap")
+    public Map<Integer, String> IdKeyChordMap;
+
+    @JsonProperty("chordpathids")
+    public List<Integer> ChordPathIds;
+
+    public RenderData(List<IdKeyNote> nodes, List<Link> links, Integer origin, Integer destination, Map<Integer, String> idKeyChordMap, List<Integer> chordPathIds) {
         this.Nodes = nodes;
         this.Links = links;
         this.Origin = origin;
         this.Destination = destination;
+        this.IdKeyChordMap = idKeyChordMap;
+        this.ChordPathIds = chordPathIds;
     }
 }

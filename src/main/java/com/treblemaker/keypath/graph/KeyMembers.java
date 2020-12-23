@@ -10,6 +10,12 @@ import java.util.Map;
 
 public class KeyMembers {
     private Map<String, List<IdKeyNote>> keyNoteMap = new HashMap<>();
+
+    public Map<Integer, String> getIdToKeyChordLookup() {
+        return idToKeyChordLookup;
+    }
+
+    private Map<Integer, String> idToKeyChordLookup = new HashMap<>();
     private List<IdKeyNote> keyNotes = new ArrayList<>();
     private int Id;
 
@@ -213,6 +219,10 @@ public class KeyMembers {
         List<IdKeyNote> allKeys = new ArrayList<>();
         for (Map.Entry<String, List<IdKeyNote>> entry : this.keyNoteMap.entrySet()) {
             allKeys.addAll(entry.getValue());
+
+            for(IdKeyNote idKeyNote : entry.getValue()) {
+               this.idToKeyChordLookup.put(idKeyNote.Id, idKeyNote.KeyNoteChord);
+            }
         }
         this.keyNotes = allKeys;
     }
