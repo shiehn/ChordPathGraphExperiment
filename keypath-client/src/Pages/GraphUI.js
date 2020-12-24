@@ -5,15 +5,17 @@ import * as Tone from 'tone'
 import uuid from 'react-uuid'
 import { Midi } from '@tonejs/midi'
 
-export class About extends React.Component {
+export class GraphUI extends React.Component {
     SESSION_ID = undefined;
-    API_ROOT = "http://34.122.124.254:80/"
+    //API_ROOT = "http://34.122.124.254:80/"
+    API_ROOT = "http://localhost:80/"
     PATH_ORIGIN = 0;
     PATH_DESTINATION = 83;
     synthStack = []
     midi = undefined;
     graphData = {}
     chordCount = 0
+    chordIndex = 0
 
     constructor() {
         super();
@@ -31,7 +33,7 @@ export class About extends React.Component {
             loading: true,
             data:{
                 idkeychordmap: {},
-                chordpathids: [],
+                chordpathids: [0],
                 nodes: [
                     {
                     "id": 99,
@@ -176,19 +178,23 @@ export class About extends React.Component {
         //     await this.loadGraphData();
         // }, (Tone.now() + notes[notes.length-1].time) + notes[notes.length-1].duration))
 
-        console.log("TIME.NOW(): ", Tone.now())
-        console.log("CHORD COUNT: ", this.chordCount)
+        for(let i=0; i<this.chordCount; i++){
+            Tone.Transport.scheduleOnce(async () => {
 
 
+                //THIS IS FIRED ON EVERY BAR
+                //TRY UPDATING THE GRAPH NODE WITH
+                //THIS ID: this.state.data.chordpathids[i]
 
+               //console.log("SCHEDULED: ", this.state.data.chordpathids[i] + "m")
+            }, new Tone.Time(i + "m"));
+        }
 
         Tone.Transport.scheduleOnce(async () => {
             console.log("LOAD DATA")
             //START THE NEW PROGRESSION AT THE END OF THE LAST
             await this.loadGraphData();
             await this.loadMidiData();
-
-
         }, new Tone.Time((this.chordCount - 1) + ":0:0"));
 
         Tone.Transport.scheduleOnce(async () => {
