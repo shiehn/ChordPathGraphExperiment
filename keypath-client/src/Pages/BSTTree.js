@@ -14,8 +14,9 @@ export class BSTTree extends React.Component {
             value: undefined,
             tree: [{
                 name: '100',
-                children: []}
-                ],
+                children: []
+            }
+            ],
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -26,8 +27,7 @@ export class BSTTree extends React.Component {
         return {
             name: val.toString(),
             children: [],
-            attributes: {
-            },
+            attributes: {},
             left: undefined,
             right: undefined,
         }
@@ -41,18 +41,18 @@ export class BSTTree extends React.Component {
         let newNode = this.createNewNode(root.value);
         newNode.left = this.cloneTree(root.left);
         let c1 = this.cloneTree(root.left);
-        let index =0;
-        if(c1) {
+        let index = 0;
+        if (c1) {
             newNode.children[index] = c1
             index++;
         }
         newNode.right = this.cloneTree(root.right);
         let c2 = this.cloneTree(root.right);
-        if(c2){
+        if (c2) {
             newNode.children[index] = c2
         }
 
-        return  newNode;
+        return newNode;
     }
 
     // bfTraveral = (node) => {
@@ -121,17 +121,18 @@ export class BSTTree extends React.Component {
         });
     }
 
-    render(){
+    render() {
         return (
             <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
-                <Tree data={this.state.tree} orientation={'vertical'} collapsible={false} translate={this.state.translate}  />
+                <Tree data={this.state.tree} orientation={'vertical'} collapsible={false}
+                      translate={this.state.translate}/>
 
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         ADD NODE:
-                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        <input type="text" value={this.state.value} onChange={this.handleChange}/>
                     </label>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Submit"/>
                 </form>
             </div>
         );

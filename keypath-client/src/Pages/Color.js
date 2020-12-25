@@ -16,7 +16,7 @@ export class Color extends React.Component {
     componentDidMount = async () => {
         const colorRes = await axios.get(`http://localhost:80/colors`);
 
-        if(!colorRes.data){
+        if (!colorRes.data) {
             return
         }
 
@@ -27,12 +27,14 @@ export class Color extends React.Component {
         this.setState({...this.state, bgcolor: color})
     }
 
-    render(){
+    render() {
         let color = {'backgroundColor': this.state.bgcolor, 'height': '100vh',}
-        return  <div style={color}>
+        return <div style={color}>
             {JSON.stringify(this.state.colors)}
             <ListGroup>
-                {this.state.colors.map((c) => {return <ColorButton key={c} color={c} handleColorChange={this.handleColorChange} />})}
+                {this.state.colors.map((c) => {
+                    return <ColorButton key={c} color={c} handleColorChange={this.handleColorChange}/>
+                })}
 
             </ListGroup>
         </div>

@@ -1,6 +1,7 @@
 package com.treblemaker.keypath.server.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import scala.collection.generic.BitOperations;
 
 public class IdKeyNote {
     @JsonProperty("id")
@@ -20,6 +21,9 @@ public class IdKeyNote {
 
     @JsonProperty("color")
     public String Color;
+
+    @JsonProperty("size")
+    public Integer Size;
 
     @JsonProperty("labelText")
     public String LabelText;

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Graph } from "react-d3-graph";
+import {Graph} from "react-d3-graph";
 import axios from "axios";
 import * as Tone from 'tone'
 import uuid from 'react-uuid'
-import { Midi } from '@tonejs/midi'
+import {Midi} from '@tonejs/midi'
 
 export class GraphUI extends React.Component {
     SESSION_ID = undefined;
@@ -31,27 +31,28 @@ export class GraphUI extends React.Component {
                 color: 'blue',
             },
             loading: true,
-            data:{
+            data: {
                 idkeychordmap: {},
                 chordpathids: [0],
                 nodes: [
                     {
-                    "id": 99,
-                    "hkey": "as",
-                    "note": "as",
-                    "chord": "maj7",
-                    "keyAndNote": "as,as-maj7",
-                    "color": "pink",
-                    "labelText": "as,as-maj7"
-                },
+                        "id": 99,
+                        "hkey": "as",
+                        "note": "as",
+                        "chord": "maj7",
+                        "keyAndNote": "as,as-maj7",
+                        "color": "pink",
+                        "labelText": "as,as-maj7"
+                    },
 
                 ],
                 links: [],
             },
+
             myConfig: {
                 initialZoom: 1,
-                height: 900,
-                width: 1200,
+                width: this.getWidth(),
+                height:  this.getHeight(),
                 //nodeHighlightBehavior: true,
                 node: {
                     labelProperty: (node) => {
@@ -66,11 +67,10 @@ export class GraphUI extends React.Component {
                 },
             }
         }
+
+
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
-
-
-
-
 
 
     loadGraphData = async () => {
@@ -88,32 +88,35 @@ export class GraphUI extends React.Component {
     }
 
     renderGraph = async () => {
-        this.setState( {...this.state, data: this.graphData, loading: false})
+        this.setState({...this.state, data: this.graphData, loading: false})
     }
 
     initAudio = async () => {
-        if(this.state.startBtn.isPlaying) {
+        if (this.state.startBtn.isPlaying) {
             return;
         }
 
-        this.setState({...this.state, startBtn: {
-            isPlaying: true,
-            css: "start-btn-overlay-hide",
-        }})
+        this.setState({
+            ...this.state, startBtn: {
+                isPlaying: true,
+                css: "start-btn-overlay-hide",
+            }
+        })
 
         await this.loadGraphData();
         await this.loadMidiData();
-        await this.startSeqence();
         await this.renderGraph();
+        await this.startSeqence();
+
 
         Tone.Transport.bpm.value = 60
         Tone.Transport.start();
     }
 
     startSeqence = async () => {
-        if(this.synthStack.length > 0) {
+        if (this.synthStack.length > 0) {
             console.log('this.synthStack.length', this.synthStack.length)
-            this.synthStack[this.synthStack.length-1].unsync();
+            this.synthStack[this.synthStack.length - 1].unsync();
             //this.synthStack[this.synthStack.length-1].dispose();
         }
 
@@ -128,21 +131,20 @@ export class GraphUI extends React.Component {
 
         //let chordCount = 0;
         let curTime = -1;
-        for(let i = 0; i < notes.length; i++){
-           if(i == notes.length-1) {
-               console.log("NOTE TIME: ", notes[i])
-               console.log("NOTE TIME: ", notes[i].time)
-               console.log("NOTE DUR: ", notes[i].duration)
-           }
+        for (let i = 0; i < notes.length; i++) {
+            // if (i == notes.length - 1) {
+                // console.log("NOTE TIME: ", notes[i])
+                // console.log("NOTE TIME: ", notes[i].time)
+                // console.log("NOTE DUR: ", notes[i].duration)
+            // }
 
-           if(notes[i].time !== curTime){
-               curTime = notes[i].time;
-               this.chordCount++;
-           }
+            if (notes[i].time !== curTime) {
+                curTime = notes[i].time;
+                this.chordCount++;
+            }
 
-           curSynth.triggerAttackRelease(notes[i].name, notes[i].duration, Tone.now() + notes[i].time, 0.5)
+            curSynth.triggerAttackRelease(notes[i].name, notes[i].duration, Tone.now() + notes[i].time, 0.5)
         }
-
 
 
         //the control changes are an object
@@ -178,20 +180,22 @@ export class GraphUI extends React.Component {
         //     await this.loadGraphData();
         // }, (Tone.now() + notes[notes.length-1].time) + notes[notes.length-1].duration))
 
-        for(let i=0; i<this.chordCount; i++){
+        for (let i = 0; i < this.state.data.chordpathids.length; i++) {
             Tone.Transport.scheduleOnce(async () => {
+                for(let j=0; j<this.state.data.nodes.length; j++){
+                    if(this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
 
+                        this.state.data.nodes[j].size = 700;
+                        this.state.data.nodes[j].color = "white";
 
-                //THIS IS FIRED ON EVERY BAR
-                //TRY UPDATING THE GRAPH NODE WITH
-                //THIS ID: this.state.data.chordpathids[i]
-
-               //console.log("SCHEDULED: ", this.state.data.chordpathids[i] + "m")
-            }, new Tone.Time(i + "m"));
+                        this.setState({...this.state.data, nodes: this.state.data.nodes})
+                        break;
+                    }
+                }
+            }, new Tone.Time((this.chordCount) - this.state.data.chordpathids.length) + i + ":0:0");
         }
 
         Tone.Transport.scheduleOnce(async () => {
-            console.log("LOAD DATA")
             //START THE NEW PROGRESSION AT THE END OF THE LAST
             await this.loadGraphData();
             await this.loadMidiData();
@@ -199,38 +203,33 @@ export class GraphUI extends React.Component {
 
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
-            console.log("ALL FINISHED")
-
-            await this.startSeqence();
             await this.renderGraph();
+            await this.startSeqence();
         }, new Tone.Time((this.chordCount) + ":0:0"));
 
 
-
-
-
-
-
-           //  console.log("midi", midi)
-           //
-           //  // make sure you set the tempo before you schedule the events
-           //  Tone.Transport.bpm.value = 60
-           //
-           //
-           //  // pass in the note events from one of the tracks as the second argument to Tone.Part
-           //  var midiPart = new Tone.Part(function(time, note) {
-           //
-           //      //use the events to play the synth
-           //      synth.triggerAttackRelease(note.name, note.duration, time, 0.5)
-           //
-           //  }, midi.tracks[0].notes).start()
-           //
-
+        //  console.log("midi", midi)
+        //
+        //  // make sure you set the tempo before you schedule the events
+        //  Tone.Transport.bpm.value = 60
+        //
+        //
+        //  // pass in the note events from one of the tracks as the second argument to Tone.Part
+        //  var midiPart = new Tone.Part(function(time, note) {
+        //
+        //      //use the events to play the synth
+        //      synth.triggerAttackRelease(note.name, note.duration, time, 0.5)
+        //
+        //  }, midi.tracks[0].notes).start()
+        //
 
 
     }
 
     async componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+
         let max = 83;
         let min = 0;
         this.PATH_DESTINATION = Math.floor(Math.random() * (max - min + 1) + min);
@@ -241,12 +240,28 @@ export class GraphUI extends React.Component {
         this.setState({...this.state, data: resp.data, loading: false})
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        this.setState({ ...this.state, myConfig: { width: this.getWidth(), height:  this.getHeight() }});
+    }
+
+    getHeight() {
+        return window.innerHeight;
+    }
+
+    getWidth() {
+        return window.outerWidth;
+    }
+
     render() {
         return <div style={this.state.divStyle} className={this.state.startBtn.css} onClick={this.initAudio}>
-            <div>
-                CHORD PATH IDS: {this.state.data.chordpathids.join(",")}
-                Destination: {this.state.data.idkeychordmap[this.PATH_DESTINATION]}
-            </div>
+            {/*<div>*/}
+            {/*    CHORD PATH IDS: {this.state.data.chordpathids.join(",")}*/}
+            {/*    Destination: {this.state.data.idkeychordmap[this.PATH_DESTINATION]}*/}
+            {/*</div>*/}
             {
                 this.state.loading ? <div>Loading...</div> : <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error

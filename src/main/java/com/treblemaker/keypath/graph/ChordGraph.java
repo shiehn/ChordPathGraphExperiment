@@ -1,6 +1,7 @@
 package com.treblemaker.keypath.graph;
 
 import com.treblemaker.keypath.database.MidiDB;
+import com.treblemaker.keypath.server.model.IdKeyNote;
 import com.treblemaker.keypath.server.model.Link;
 import com.treblemaker.keypath.server.model.RenderData;
 import org.jfugue.midi.MidiFileManager;
@@ -34,9 +35,7 @@ public class ChordGraph {
         System.out.println("71 KEY = " + this.keyMembers.getById(70).Key + " CHORD = " + this.keyMembers.getById(70).Chord);
 
         List<Link> edges = this.chordEdges.createEdges(this.keyMembers.getKeyNoteMap());
-
         List<Link> chordPath = this.chordPaths.generateChordPath(edges, this.keyMembers, origin, destination);
-
         List<Integer> chordPathIds = new ArrayList<>();
 
         for (int i=0; i<chordPath.size(); i++) {
@@ -49,7 +48,18 @@ public class ChordGraph {
 
         edges = this.chordPaths.addOrUpdateChordPathLinks(chordPath, edges);
 
-        RenderData renderData = new RenderData(this.keyMembers.getAllKeys(), edges, origin, destination, this.keyMembers.getIdToKeyChordLookup(), chordPathIds);
+        //INCREASE THE SIZE OF THE FIRST NODE:
+        List<IdKeyNote> nodes = this.keyMembers.getAllKeys();
+        for (int i=0; i<nodes.size(); i++) {
+           if(chordPathIds.get(0) == nodes.get(i).Id){
+               nodes.get(i).Size = 700;
+               nodes.get(i).Color = "white";
+               break;
+           }
+        }
+        //FINISH INCREASE THE SIZE OF THE FIRST NODE:
+
+        RenderData renderData = new RenderData(nodes, edges, origin, destination, this.keyMembers.getIdToKeyChordLookup(), chordPathIds);
 
         System.out.println("************************************************************************");
         System.out.println("************************************************************************");

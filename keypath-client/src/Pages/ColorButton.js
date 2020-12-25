@@ -4,8 +4,7 @@ export class ColorButton extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
     }
 
     componentDidMount = async () => {
@@ -16,10 +15,12 @@ export class ColorButton extends React.Component {
     //     this.setState({...this.state, bgcolor: color})
     // }
 
-    render(){
+    render() {
         let color = {'background-color': this.state.bgcolor, 'height': '100vh',}
-        return  (<button onClick={() => { this.props.handleColorChange(this.props.color) }}>
+        return (<button onClick={() => {
+            this.props.handleColorChange(this.props.color)
+        }}>
             {this.props.color}
-            </button>);
+        </button>);
     }
 }

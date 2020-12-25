@@ -26,7 +26,7 @@ public class Link {
 
     public Link setIsPath() {
         this.StrokeWidth = 4;
-        this.Color = "black";
+        this.Color = "white";
         this.Opacity = 1;
 
         return this;
