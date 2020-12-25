@@ -258,10 +258,10 @@ export class GraphUI extends React.Component {
 
     render() {
         return <div style={this.state.divStyle} className={this.state.startBtn.css} onClick={this.initAudio}>
-            {/*<div>*/}
-            {/*    CHORD PATH IDS: {this.state.data.chordpathids.join(",")}*/}
-            {/*    Destination: {this.state.data.idkeychordmap[this.PATH_DESTINATION]}*/}
-            {/*</div>*/}
+            <div className="topcenter">
+                CHORD PATH IDS: {this.state.data.chordpathids.join(",")}
+                Destination: {this.state.data.idkeychordmap[this.PATH_DESTINATION]}
+            </div>
             {
                 this.state.loading ? <div>Loading...</div> : <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
@@ -269,6 +269,22 @@ export class GraphUI extends React.Component {
                     config={this.state.myConfig}
                 />
             }
+            <div className="bottomleft">
+                <ol class="custom-bullet medals">
+                    <li><b>A</b> major</li>
+                    <li><b>A#</b> major</li>
+                    <li><b>B</b> major</li>
+                    <li><b>C</b> major</li>
+                    <li><b>C#</b> major</li>
+                    <li><b>D</b> major</li>
+                    <li><b>D#</b> major</li>
+                    <li><b>E</b> major</li>
+                    <li><b>F</b> major</li>
+                    <li><b>F#</b> major</li>
+                    <li><b>G</b> major</li>
+                    <li><b>G#</b> major</li>
+                </ol>
+            </div>
         </div>
     }
 }

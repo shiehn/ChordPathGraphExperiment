@@ -31,11 +31,11 @@ code {
     left: 50%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    content: "▶️";
+    content: url("data:image/svg+xml; utf8, <svg width='250' height='250' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' > <path fill-rule='evenodd' clip-rule='evenodd'  d='M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z' fill='white' /> <path d='M16 12L10 16.3301V7.66987L16 12Z' fill='white' /> </svg>");
     font-family: FontAwesome;
     font-size: 150px;
-    color: #fff;
-    opacity: .8;
+    color: white;
+    opacity: .3;
     text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -46,4 +46,113 @@ code {
 .start-btn-over-hide {
 }
 
+.bottomleft {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+    font-size: 14px;
+    color: grey;
+}
 
+.topcenter {
+    position: absolute;
+    top: 5%;
+    width: 100%;
+    /*margin: 0 auto;*/
+}
+
+ol{
+    display:inline-block;
+    line-height: 1.3em;
+    border:solid 1px;
+    padding:0.5em;
+    padding-left:2em;
+    margin:0.5em;
+}
+
+ol.custom-bullet{
+    list-style:none;
+}
+ol.custom-bullet >li {
+    clear:left;
+    display: list-item;
+    text-align: left;
+}
+ol.custom-bullet {
+    counter-reset: liNum;
+}
+ol.custom-bullet > li {
+    counter-increment:liNum 1;
+}
+
+ol.custom-bullet > li:before{
+    content:counter(liNum);
+    text-align:left;
+}
+
+ol.custom-bullet > li:before {
+    content:"";
+    height:1em;
+    width:1em;
+    display:block;
+    float:left;
+    margin-left:-1.5em;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:100%;
+}
+
+ol.custom-bullet {
+    counter-reset: liNum;
+}
+ol.custom-bullet > li {
+    counter-increment:liNum 1;
+}
+ol.medals > li:nth-of-type(1):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='green' /></svg>");
+}
+ol.medals > li:nth-of-type(2):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='pink' /></svg>");
+}
+ol.medals > li:nth-of-type(3):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='yellow' /></svg>");
+}
+ol.medals > li:nth-of-type(4):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='orange' /></svg>");
+}
+ol.medals > li:nth-of-type(5):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='black' /></svg>");
+}
+ol.medals > li:nth-of-type(6):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='red' /></svg>");
+}
+ol.medals > li:nth-of-type(7):before{
+     content:"";
+     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='maroon' /></svg>");
+ }
+ol.medals > li:nth-of-type(8):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='teal' /></svg>");
+}
+ol.medals > li:nth-of-type(9):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='brown' /></svg>");
+}
+ol.medals > li:nth-of-type(10):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='purple' /></svg>");
+}
+ol.medals > li:nth-of-type(11):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='lime' /></svg>");
+}
+ol.medals > li:nth-of-type(12):before{
+    content:"";
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='red' /></svg>");
+}

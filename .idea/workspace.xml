@@ -7,25 +7,8 @@
     <list default="true" id="4599abeb-6977-43df-bfb2-1682dc58be1d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/App.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/BSTTree.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/BSTTree.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/Color.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/Color.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/ColorButton.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/ColorButton.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/logo.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/reportWebVitals.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/reportWebVitals.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/3083841-27-26d-6edc-88618aaaf/1608670110444$13d86cae-0bb8-41a7-9650-4d7ab6009a23.mid" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/4ebd610-5600-42da-416-dcf1bbddf7c/1608670346825$fbe49141-e8e0-42b3-ac0d-cac0b743faf8.mid" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/4ebd610-5600-42da-416-dcf1bbddf7c/1608670349075$bdb0f407-19e4-415b-9313-1f3dceee0277.mid" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/df4b30d-ec3a-14a-64f3-0bb7055774a/1608670135372$e876418c-d77d-4de6-a42a-c6626614b420.mid" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/IdKeyNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/IdKeyNote.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/Link.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/Link.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,7 +237,7 @@
       <workItem from="1608667114155" duration="2120000" />
       <workItem from="1608669654642" duration="3244000" />
       <workItem from="1608680140343" duration="8620000" />
-      <workItem from="1608753697981" duration="20535000" />
+      <workItem from="1608753697981" duration="26713000" />
     </task>
     <servers />
   </component>
