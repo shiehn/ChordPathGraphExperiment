@@ -52,7 +52,7 @@ export class GraphUI extends React.Component {
             myConfig: {
                 initialZoom: 1,
                 width: this.getWidth(),
-                height:  this.getHeight(),
+                height: this.getHeight(),
                 //nodeHighlightBehavior: true,
                 node: {
                     labelProperty: (node) => {
@@ -115,7 +115,6 @@ export class GraphUI extends React.Component {
 
     startSeqence = async () => {
         if (this.synthStack.length > 0) {
-            console.log('this.synthStack.length', this.synthStack.length)
             this.synthStack[this.synthStack.length - 1].unsync();
             //this.synthStack[this.synthStack.length-1].dispose();
         }
@@ -126,18 +125,12 @@ export class GraphUI extends React.Component {
         curSynth.toDestination();
         curSynth.volume.value = -20;
 
-        const track = this.midi.tracks[0];
-        const notes = track.notes
 
-        //let chordCount = 0;
+        //CHORD NOTES
+        let track = this.midi.tracks[0];
+        let notes = track.notes
         let curTime = -1;
         for (let i = 0; i < notes.length; i++) {
-            // if (i == notes.length - 1) {
-                // console.log("NOTE TIME: ", notes[i])
-                // console.log("NOTE TIME: ", notes[i].time)
-                // console.log("NOTE DUR: ", notes[i].duration)
-            // }
-
             if (notes[i].time !== curTime) {
                 curTime = notes[i].time;
                 this.chordCount++;
@@ -146,6 +139,17 @@ export class GraphUI extends React.Component {
             curSynth.triggerAttackRelease(notes[i].name, notes[i].duration, Tone.now() + notes[i].time, 0.5)
         }
 
+        //BASS NOTES
+        track = this.midi.tracks[1];
+        notes = track.notes
+        curTime = -1;
+        for (let i = 0; i < notes.length; i++) {
+            if (notes[i].time !== curTime) {
+                curTime = notes[i].time;
+            }
+
+            curSynth.triggerAttackRelease(notes[i].name, notes[i].duration, Tone.now() + notes[i].time, 0.5)
+        }
 
         //the control changes are an object
         //the keys are the CC number
@@ -182,8 +186,8 @@ export class GraphUI extends React.Component {
 
         for (let i = 0; i < this.state.data.chordpathids.length; i++) {
             Tone.Transport.scheduleOnce(async () => {
-                for(let j=0; j<this.state.data.nodes.length; j++){
-                    if(this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
+                for (let j = 0; j < this.state.data.nodes.length; j++) {
+                    if (this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
 
                         this.state.data.nodes[j].size = 700;
                         this.state.data.nodes[j].color = "white";
@@ -245,7 +249,7 @@ export class GraphUI extends React.Component {
     }
 
     updateWindowDimensions() {
-        this.setState({ ...this.state, myConfig: { width: this.getWidth(), height:  this.getHeight() }});
+        this.setState({...this.state, myConfig: {width: this.getWidth(), height: this.getHeight()}});
     }
 
     getHeight() {
@@ -269,7 +273,7 @@ export class GraphUI extends React.Component {
                 />
             }
             <div className="bottomleft">
-                <ol class="custom-bullet medals">
+                <ol className="custom-bullet medals">
                     <li><b>A</b> major</li>
                     <li><b>A#</b> major</li>
                     <li><b>B</b> major</li>
