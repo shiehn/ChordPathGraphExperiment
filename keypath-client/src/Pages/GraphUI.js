@@ -259,8 +259,7 @@ export class GraphUI extends React.Component {
     render() {
         return <div style={this.state.divStyle} className={this.state.startBtn.css} onClick={this.initAudio}>
             <div className="topcenter">
-                CHORD PATH IDS: {this.state.data.chordpathids.join(",")}
-                Destination: {this.state.data.idkeychordmap[this.PATH_DESTINATION]}
+                START: <b>{this.state.data.idkeychordmap[this.state.data.chordpathids[0]]}</b> Destination: <b>{this.state.data.idkeychordmap[this.PATH_DESTINATION]}</b>
             </div>
             {
                 this.state.loading ? <div>Loading...</div> : <Graph

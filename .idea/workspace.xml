@@ -70,6 +70,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/com" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/keypath-client/src" />
       <recent name="$PROJECT_DIR$/output" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/java/com" />
@@ -91,19 +92,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.KeypathApplication">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="MidiDBTest.createsSessionPathAndCreatedAtFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chords-to-melody-generator" />
       <extension name="coverage">
@@ -237,7 +225,7 @@
       <workItem from="1608667114155" duration="2120000" />
       <workItem from="1608669654642" duration="3244000" />
       <workItem from="1608680140343" duration="8620000" />
-      <workItem from="1608753697981" duration="26713000" />
+      <workItem from="1608753697981" duration="28837000" />
     </task>
     <servers />
   </component>
