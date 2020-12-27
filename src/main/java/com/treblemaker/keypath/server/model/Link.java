@@ -16,7 +16,7 @@ public class Link {
     public double StrokeWidth = 0.5;
 
     @JsonProperty("opacity")
-    public double Opacity = 0.5;
+    public double Opacity = 0.8;
 
     public Link(int source, int target) {
         this.Source = source;

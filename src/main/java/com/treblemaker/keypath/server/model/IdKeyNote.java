@@ -3,6 +3,8 @@ package com.treblemaker.keypath.server.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import scala.collection.generic.BitOperations;
 
+import java.util.Locale;
+
 public class IdKeyNote {
     @JsonProperty("id")
     public int Id;
@@ -34,7 +36,29 @@ public class IdKeyNote {
         this.Note = note;
         this.Chord = chord;
         this.KeyNoteChord = this.Key + "," + this.Note + "-" + this.Chord;
-        this.LabelText = this.Key + "," + this.Note + "-" + this.Chord;
+        this.LabelText = this.Note.toUpperCase() + updateChordType(this.Chord);
         this.Color = color;
+    }
+
+    private String updateChordType(String originalVal){
+        originalVal = originalVal.toLowerCase();
+
+        if(originalVal.contains("maj")) {
+            originalVal = originalVal.replace("maj", "M");
+        }
+
+        if(originalVal.contains("min")) {
+            originalVal = originalVal.replace("min", "m");
+        }
+
+        if(originalVal.contains("dom7")) {
+            originalVal = originalVal.replace("dom7", "dom");
+        }
+
+        if(originalVal.contains("dim")) {
+            originalVal = originalVal.replace("dim", "ø");
+        }
+
+        return originalVal;
     }
 }

@@ -44,7 +44,7 @@ public class KeyMembers {
         nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "min7", color));
         nodes.add(new IdKeyNote(this.incrementId(), key, "d", "maj7", color));
         nodes.add(new IdKeyNote(this.incrementId(), key, "e", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "f3", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f#", "min7", color));
         nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
@@ -120,7 +120,7 @@ public class KeyMembers {
         nodes.add(new IdKeyNote(this.incrementId(), key, "g", "maj7", color));
         nodes.add(new IdKeyNote(this.incrementId(), key, "a", "dom7", color));
         nodes.add(new IdKeyNote(this.incrementId(), key, "b", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "dim", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 

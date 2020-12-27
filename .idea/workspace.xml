@@ -7,8 +7,14 @@
     <list default="true" id="4599abeb-6977-43df-bfb2-1682dc58be1d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/.eslintcache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keypath-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/KeyMembers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/KeyMembers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/IdKeyNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/IdKeyNote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/Link.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/Link.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/RenderData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/RenderData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,9 +25,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
         <option value="JavaScript File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -92,6 +98,17 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.KeypathApplication">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MidiDBTest.createsSessionPathAndCreatedAtFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chords-to-melody-generator" />
       <extension name="coverage">
@@ -226,6 +243,8 @@
       <workItem from="1608669654642" duration="3244000" />
       <workItem from="1608680140343" duration="8620000" />
       <workItem from="1608753697981" duration="28837000" />
+      <workItem from="1608942311811" duration="55000" />
+      <workItem from="1609004542014" duration="32709000" />
     </task>
     <servers />
   </component>

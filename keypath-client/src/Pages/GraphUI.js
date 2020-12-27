@@ -8,8 +8,8 @@ import SynthProducer from "../Synths/SynthProducer";
 
 export class GraphUI extends React.Component {
     SESSION_ID = undefined;
-    //API_ROOT = "http://34.122.124.254:80/"
-    API_ROOT = "http://localhost:80/"
+    API_ROOT = "http://34.122.124.254:80/"
+    // API_ROOT = "http://localhost:80/"
     PATH_ORIGIN = 0;
     PATH_DESTINATION = 83;
     synthChordStack = [];
@@ -41,33 +41,27 @@ export class GraphUI extends React.Component {
                 nodes: [
                     {
                         "id": 99,
-                        "hkey": "as",
-                        "note": "as",
+                        "hkey": "a#",
+                        "note": "a#",
                         "chord": "maj7",
-                        "keyAndNote": "as,as-maj7",
+                        "keyAndNote": "a#,a#-maj7",
                         "color": "pink",
-                        "labelText": "as,as-maj7"
+                        "labelText": "a#,a#-maj7"
                     },
-
                 ],
                 links: [],
             },
-
-            myConfig: {
+            myconfig: {
                 initialZoom: 1,
                 width: this.getWidth(),
                 height: this.getHeight(),
-                //nodeHighlightBehavior: true,
+                nodeHighlightBehavior: false,
                 node: {
-                    labelProperty: (node) => {
-                        return node.labelText
-                    },
+                    labelPosition: 'center',
+                    labelProperty: "labelText",
                     renderLabel: true,
-                    size: 120,
-                    highlightStrokeColor: "black",
-                },
-                link: {
-                    highlightColor: "lightblue",
+                    size: 500,
+                    highlightStrokeColor: "white",
                 },
             }
         }
@@ -84,8 +78,8 @@ export class GraphUI extends React.Component {
         this.PATH_DESTINATION = Math.floor(Math.random() * (max - min + 1) + min);
 
         let resp = await axios.get(`${this.API_ROOT}graph/${this.SESSION_ID}/${this.PATH_ORIGIN}/${this.PATH_DESTINATION}`)
-        this.graphData = resp.data;
-        this.PATH_ORIGIN = resp.data.destination;
+        this.graphData = resp.data.data;
+        this.PATH_ORIGIN = resp.data.data.destination;
     }
 
     loadMidiData = async () => {
@@ -107,7 +101,6 @@ export class GraphUI extends React.Component {
                 css: "start-btn-overlay-hide",
             }
         })
-
         await this.loadGraphData();
         await this.loadMidiData();
         await this.renderGraph();
@@ -189,7 +182,7 @@ export class GraphUI extends React.Component {
             Tone.Transport.scheduleOnce(async () => {
                 for (let j = 0; j < this.state.data.nodes.length; j++) {
                     if (this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
-                        this.state.data.nodes[j].size = 700;
+                        this.state.data.nodes[j].size = 800;
                         this.state.data.nodes[j].color = "white";
 
                         this.setState({...this.state.data, nodes: this.state.data.nodes})
@@ -232,9 +225,13 @@ export class GraphUI extends React.Component {
         this.PATH_DESTINATION = Math.floor(Math.random() * (max - min + 1) + min);
 
         let resp = await axios.get(`${this.API_ROOT}graph/${this.SESSION_ID}/${this.PATH_ORIGIN}/${this.PATH_DESTINATION}`);
-        this.PATH_ORIGIN = resp.data.destination;
+        this.PATH_ORIGIN = resp.data.data.destination;
 
-        this.setState({...this.state, data: resp.data, loading: false})
+        //set browser dims
+        resp.data.myconfig.width = this.getWidth();
+        resp.data.myconfig.height = this.getHeight();
+
+        this.setState({...this.state, data: resp.data.data, myconfig: resp.data.myconfig, loading: false})
     }
 
     componentWillUnmount() {
@@ -242,7 +239,7 @@ export class GraphUI extends React.Component {
     }
 
     updateWindowDimensions() {
-        this.setState({...this.state, myConfig: {width: this.getWidth(), height: this.getHeight()}});
+        this.setState({...this.state.myconfig, width: this.getWidth(), height: this.getHeight()});
     }
 
     getHeight() {
@@ -254,6 +251,10 @@ export class GraphUI extends React.Component {
     }
 
     getStartText() {
+        if(this.state.data.chordpathids === undefined) {
+            return "";
+        }
+
         let startText = ["", ""];
         const keyChord = this.state.data.idkeychordmap[this.state.data.chordpathids[0]];
         if (keyChord) {
@@ -265,10 +266,16 @@ export class GraphUI extends React.Component {
             chordNoteType = startText[1].split('-');
         }
 
+        console.log('START CN:', chordNoteType)
+
         return chordNoteType[0].toUpperCase() + chordNoteType[1];
     }
 
     getDestinationText() {
+       if(!this.state.data.idkeychordmap) {
+           return "";
+       }
+
         let startText = ["", ""];
         const keyChord = this.state.data.idkeychordmap[this.PATH_DESTINATION];
         if (keyChord) {
@@ -279,6 +286,8 @@ export class GraphUI extends React.Component {
         if (startText[1]) {
             chordNoteType = startText[1].split('-');
         }
+
+        console.log('DEST CN:', chordNoteType)
 
         return chordNoteType[0].toUpperCase() + chordNoteType[1];
     }
@@ -293,6 +302,8 @@ export class GraphUI extends React.Component {
                 return "yellow";
             case "c":
                 return "orange";
+            case "c#":
+                return "black";
             case "d":
                 return "red";
             case "d#":
@@ -313,9 +324,13 @@ export class GraphUI extends React.Component {
     }
 
     getStartColor(){
+        if(this.state.data.chordpathids === undefined) {
+            return "";
+        }
+
         let startText = ["", ""];
         const keyChord = this.state.data.idkeychordmap[this.state.data.chordpathids[0]];
-        if (keyChord) {
+        if (keyChord !== undefined) {
             startText = keyChord.split(',');
         }
 
@@ -323,9 +338,13 @@ export class GraphUI extends React.Component {
     }
 
     getDestinationColor(){
+        if(this.state.data.chordpathids === undefined) {
+            return "";
+        }
+
         let startText = ["", ""];
         const keyChord = this.state.data.idkeychordmap[this.PATH_DESTINATION];
-        if (keyChord) {
+        if (keyChord !== undefined) {
             startText = keyChord.split(',');
         }
 
@@ -349,7 +368,7 @@ export class GraphUI extends React.Component {
                 this.state.loading ? <div>Loading...</div> : <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                     data={this.state.data}
-                    config={this.state.myConfig}
+                    config={this.state.myconfig}
                 />
             }
             <div className="bottomleft">
