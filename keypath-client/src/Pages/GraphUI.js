@@ -4,6 +4,7 @@ import axios from "axios";
 import * as Tone from 'tone'
 import uuid from 'react-uuid'
 import {Midi} from '@tonejs/midi'
+import SynthProducer from "../Synths/SynthProducer";
 
 export class GraphUI extends React.Component {
     SESSION_ID = undefined;
@@ -11,11 +12,14 @@ export class GraphUI extends React.Component {
     API_ROOT = "http://localhost:80/"
     PATH_ORIGIN = 0;
     PATH_DESTINATION = 83;
-    synthStack = []
+    synthChordStack = [];
+    synthBassStack = [];
+    synthTrebleStack = [];
     midi = undefined;
     graphData = {}
-    chordCount = 0
-    chordIndex = 0
+    chordCount = 0;
+    chordIndex = 0;
+    SYNTH_PRODUCER;
 
     constructor() {
         super();
@@ -68,6 +72,7 @@ export class GraphUI extends React.Component {
             }
         }
 
+        this.SYNTH_PRODUCER = new SynthProducer();
 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -108,23 +113,34 @@ export class GraphUI extends React.Component {
         await this.renderGraph();
         await this.startSeqence();
 
-
         Tone.Transport.bpm.value = 60
         Tone.Transport.start();
     }
 
     startSeqence = async () => {
-        if (this.synthStack.length > 0) {
-            this.synthStack[this.synthStack.length - 1].unsync();
-            //this.synthStack[this.synthStack.length-1].dispose();
+        if (this.synthChordStack.length > 0) {
+            this.synthChordStack[this.synthChordStack.length - 1].unsync();
         }
 
-        let curSynth = new Tone.PolySynth(Tone.AMSynth);
-        this.synthStack.push(curSynth);
+        if (this.synthBassStack.length > 0) {
+            this.synthBassStack[this.synthBassStack.length - 1].unsync();
+        }
 
-        curSynth.toDestination();
-        curSynth.volume.value = -20;
+        if (this.synthTrebleStack.length > 0) {
+            this.synthTrebleStack[this.synthTrebleStack.length - 1].unsync();
+        }
 
+        let chordSynth = this.SYNTH_PRODUCER.getRandomChordSynth();
+        this.synthChordStack.push(chordSynth);
+
+
+        let bassSynth = this.SYNTH_PRODUCER.getRandomBassSynth();
+        this.synthBassStack.push(bassSynth);
+
+        let trebleSynth = this.SYNTH_PRODUCER.getRandomTrebleSynth();
+        this.synthTrebleStack.push(trebleSynth);
+
+        let noteCache = [];
 
         //CHORD NOTES
         let track = this.midi.tracks[0];
@@ -136,7 +152,9 @@ export class GraphUI extends React.Component {
                 this.chordCount++;
             }
 
-            curSynth.triggerAttackRelease(notes[i].name, notes[i].duration, Tone.now() + notes[i].time, 0.5)
+            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteCache);
+
+            chordSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
         //BASS NOTES
@@ -148,47 +166,30 @@ export class GraphUI extends React.Component {
                 curTime = notes[i].time;
             }
 
-            curSynth.triggerAttackRelease(notes[i].name, notes[i].duration, Tone.now() + notes[i].time, 0.5)
+            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteCache);
+
+            bassSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
-        //the control changes are an object
-        //the keys are the CC number
-        //track.controlChanges[64]
-        //they are also aliased to the CC number's common name (if it has one)
-        // track.controlChanges.sustain.forEach(cc => {
-        //     // cc.ticks, cc.value, cc.time
-        // })
+        //TREBLE NOTES
+        track = this.midi.tracks[2];
+        notes = track.notes
+        curTime = -1;
+        for (let i = 0; i < notes.length; i++) {
+            if (notes[i].time !== curTime) {
+                curTime = notes[i].time;
+            }
 
-        // var tremolo = new Tone.Tremolo(4, 0.75).toDestination().start();
-        // var phaser = new Tone.Phaser({
-        //     "frequency" : 6,
-        //     "octaves" : 5,
-        //     "baseFrequency" : 1000
-        // }).toMaster();
-        // const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
-        // const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
-        //
-        // synth.chain(pingPong, autoWah, phaser, tremolo)
+            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteCache);
 
-        //alert(notes.length)
+            trebleSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
+        }
 
-        // Tone.Transport.scheduleOnce(async () => {
-        //     console.log("Half FINISHED")
-        //     //START LOADING THE GRAPH DATA HALFWAY THROUGH CURRENT PROGRESSION
-        //     await this.loadGraphData();
-        // }, (Tone.now() + notes[notes.length-1].time + notes[notes.length-1].duration) / 2)
-
-        // Tone.Transport.scheduleOnce(async () => {
-        //     alert("FINISHED")
-        //     //START LOADING THE GRAPH DATA HALFWAY THROUGH CURRENT PROGRESSION
-        //     await this.loadGraphData();
-        // }, (Tone.now() + notes[notes.length-1].time) + notes[notes.length-1].duration))
-
+        console.log("AAA");
         for (let i = 0; i < this.state.data.chordpathids.length; i++) {
             Tone.Transport.scheduleOnce(async () => {
                 for (let j = 0; j < this.state.data.nodes.length; j++) {
                     if (this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
-
                         this.state.data.nodes[j].size = 700;
                         this.state.data.nodes[j].color = "white";
 
@@ -196,38 +197,43 @@ export class GraphUI extends React.Component {
                         break;
                     }
                 }
-            }, new Tone.Time((this.chordCount) - this.state.data.chordpathids.length) + i + ":0:0");
+            }, this.preventTimeCollision(
+                new Tone.Time((this.chordCount - this.state.data.chordpathids.length) + i + ":0:0"),
+                noteCache));
         }
 
+        console.log("BBB");
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
             await this.loadGraphData();
             await this.loadMidiData();
-        }, new Tone.Time((this.chordCount - 1) + ":0:0"));
+        }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":0:0"), noteCache));
 
+
+        console.log("CCC");
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
             await this.renderGraph();
             await this.startSeqence();
-        }, new Tone.Time((this.chordCount) + ":0:0"));
+        }, this.preventTimeCollision(new Tone.Time((this.chordCount) + ":0:0"), noteCache));
 
+        console.log('new Tone.Time((this.chordCount) + ":0:0")', new Tone.Time((this.chordCount) + ":0:0").toSeconds())
+        console.log('Tone.now()', Tone.now())
+    }
 
-        //  console.log("midi", midi)
-        //
-        //  // make sure you set the tempo before you schedule the events
-        //  Tone.Transport.bpm.value = 60
-        //
-        //
-        //  // pass in the note events from one of the tracks as the second argument to Tone.Part
-        //  var midiPart = new Tone.Part(function(time, note) {
-        //
-        //      //use the events to play the synth
-        //      synth.triggerAttackRelease(note.name, note.duration, time, 0.5)
-        //
-        //  }, midi.tracks[0].notes).start()
-        //
+    preventTimeCollision(time, timeCache) {
 
+        console.log('time', time)
+        console.log('timeCache', timeCache)
 
+        if(timeCache.includes(time)){
+            //alert("t is in noteCache")
+            time = time+0.1;
+        }
+
+        timeCache.push(time)
+
+        return time
     }
 
     async componentDidMount() {

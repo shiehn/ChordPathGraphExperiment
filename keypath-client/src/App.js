@@ -1,9 +1,7 @@
 import './App.css';
 import {Route, BrowserRouter as Router, Link} from "react-router-dom";
 import {GraphUI} from './Pages/GraphUI'
-import {BSTTree} from './Pages/BSTTree'
 import ListGroup from 'react-bootstrap/ListGroup'
-import {Color} from "./Pages/Color";
 
 function App() {
     return (
@@ -16,8 +14,6 @@ function App() {
                 {/*</ListGroup>*/}
 
                 <Route path="/" exact component={GraphUI}/>
-                <Route path="/tree" exact component={BSTTree}/>
-                <Route path="/color" exact component={Color}/>
             </div>
 
         </Router>

@@ -17,7 +17,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -45,6 +44,6 @@
     "react-d3-graph": "^2.6.0",
     "react-router-dom": "^5.2.0",
     "react-uuid": "^1.0.2",
-    "tone": "^14.7.58"
+    "tone": "^14.7.74"
   }
 }
