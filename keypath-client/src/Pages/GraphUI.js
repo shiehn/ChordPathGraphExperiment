@@ -185,7 +185,6 @@ export class GraphUI extends React.Component {
             trebleSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
-        console.log("AAA");
         for (let i = 0; i < this.state.data.chordpathids.length; i++) {
             Tone.Transport.scheduleOnce(async () => {
                 for (let j = 0; j < this.state.data.nodes.length; j++) {
@@ -202,37 +201,25 @@ export class GraphUI extends React.Component {
                 noteCache));
         }
 
-        console.log("BBB");
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
             await this.loadGraphData();
             await this.loadMidiData();
         }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":0:0"), noteCache));
 
-
-        console.log("CCC");
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
             await this.renderGraph();
             await this.startSeqence();
         }, this.preventTimeCollision(new Tone.Time((this.chordCount) + ":0:0"), noteCache));
-
-        console.log('new Tone.Time((this.chordCount) + ":0:0")', new Tone.Time((this.chordCount) + ":0:0").toSeconds())
-        console.log('Tone.now()', Tone.now())
     }
 
     preventTimeCollision(time, timeCache) {
-
-        console.log('time', time)
-        console.log('timeCache', timeCache)
-
-        if(timeCache.includes(time)){
-            //alert("t is in noteCache")
-            time = time+0.1;
+        if (timeCache.includes(time)) {
+            time = time + 0.05;
         }
 
         timeCache.push(time)
-
         return time
     }
 
@@ -266,10 +253,97 @@ export class GraphUI extends React.Component {
         return window.outerWidth;
     }
 
+    getStartText() {
+        let startText = ["", ""];
+        const keyChord = this.state.data.idkeychordmap[this.state.data.chordpathids[0]];
+        if (keyChord) {
+            startText = keyChord.split(',');
+        }
+
+        let chordNoteType = ["", ""]
+        if (startText[1]) {
+            chordNoteType = startText[1].split('-');
+        }
+
+        return chordNoteType[0].toUpperCase() + chordNoteType[1];
+    }
+
+    getDestinationText() {
+        let startText = ["", ""];
+        const keyChord = this.state.data.idkeychordmap[this.PATH_DESTINATION];
+        if (keyChord) {
+            startText = keyChord.split(',');
+        }
+
+        let chordNoteType = ["", ""]
+        if (startText[1]) {
+            chordNoteType = startText[1].split('-');
+        }
+
+        return chordNoteType[0].toUpperCase() + chordNoteType[1];
+    }
+
+    getColorFromKey(key){
+        switch(key) {
+            case "a":
+                return "green";
+            case "a#":
+                return "pink";
+            case "b":
+                return "yellow";
+            case "c":
+                return "orange";
+            case "d":
+                return "red";
+            case "d#":
+                return "maroon";
+            case "e":
+                return "teal";
+            case "f":
+                return "brown";
+            case "f#":
+                return "purple";
+            case "g":
+                return "lime";
+            case "g#":
+                return "blue";
+            default:
+                return ''
+        }
+    }
+
+    getStartColor(){
+        let startText = ["", ""];
+        const keyChord = this.state.data.idkeychordmap[this.state.data.chordpathids[0]];
+        if (keyChord) {
+            startText = keyChord.split(',');
+        }
+
+        return this.getColorFromKey(startText[0])
+    }
+
+    getDestinationColor(){
+        let startText = ["", ""];
+        const keyChord = this.state.data.idkeychordmap[this.PATH_DESTINATION];
+        if (keyChord) {
+            startText = keyChord.split(',');
+        }
+
+        return this.getColorFromKey(startText[0])
+    }
+
     render() {
         return <div style={this.state.divStyle} className={this.state.startBtn.css} onClick={this.initAudio}>
-            <div className="topcenter">
-                START: <b>{this.state.data.idkeychordmap[this.state.data.chordpathids[0]]}</b> Destination: <b>{this.state.data.idkeychordmap[this.PATH_DESTINATION]}</b>
+            <div className="bottomright">
+                <div className="bottomborder">
+                    <div className="bottomrightcircle" style={{background: this.getStartColor()}}></div>
+                    <div className="bottomtext">&nbsp;{this.getStartText()}</div>
+                </div>
+                <div className="emoji">➡️</div>
+                <div className="bottomborder">
+                    <div className="bottomrightcircle" style={{background: this.getDestinationColor()}}></div>
+                    <div className="bottomtext">&nbsp;{this.getDestinationText()}</div>
+                </div>
             </div>
             {
                 this.state.loading ? <div>Loading...</div> : <Graph

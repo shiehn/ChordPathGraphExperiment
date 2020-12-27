@@ -5,20 +5,21 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /*background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSI+CjxyZWN0IHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgZmlsbD0iIzI4MjgyOCI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIzIiBjeT0iNC4zIiByPSIxLjgiIGZpbGw9IiMzOTM5MzkiPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+CjxjaXJjbGUgY3g9IjEwLjUiIGN5PSIxMi41IiByPSIxLjgiIGZpbGw9IiMzOTM5MzkiPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIxMC41IiBjeT0iMTEuMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+Cjwvc3ZnPg==");*/
+    background-color: #000;
 
-    /*background-image: url("shattered-island.gif");*/
+    /*background: radial-gradient(rgba(0,0,0,1), rgba(0,0,0,1),  rgba(0,0,0,0)), url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSI+CjxyZWN0IHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgZmlsbD0iIzI4MjgyOCI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIzIiBjeT0iNC4zIiByPSIxLjgiIGZpbGw9IiMzOTM5MzkiPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+CjxjaXJjbGUgY3g9IjEwLjUiIGN5PSIxMi41IiByPSIxLjgiIGZpbGw9IiMzOTM5MzkiPjwvY2lyY2xlPgo8Y2lyY2xlIGN4PSIxMC41IiBjeT0iMTEuMyIgcj0iMS44IiBmaWxsPSJibGFjayI+PC9jaXJjbGU+Cjwvc3ZnPg==");*/
+    /*background: radial-gradient(rgba(0,0,0,1), rgba(0,0,0,1),  rgba(0,0,0,0)), url("fancy-pants.jpg");*/
+    /*background: radial-gradient(rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,0)), url("celebration.png");*/
+    /*background: radial-gradient(rgba(0,0,0,1), rgba(0,0,0,1),rgba(0,0,0,0)), url("shattered-island.gif");*/
+    background: radial-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url("chalkboard.jpg");
 
-    /*background-image: url("celebration.png");*/
+    /*background-image: url("chalkboard.jpg");*/
+    /*background-repeat: repeat;*/
+    /*background-color: black;*/
+    /*box-shadow: inset 0 0 5em 1em #000;*/
+    /*overflow-y: hidden; !* Hide vertical scrollbar *!*/
+    /*overflow-x: hidden; !* Hide horizontal scrollbar *!*/
 
-    background-image: url("chalkboard.jpg");
-    /*background-image: url("fancy-pants.jpg");*/
-    background-repeat: repeat;
-
-    background-color: b;
-    box-shadow: inset 0 0 5em 1em #000;
-    overflow-y: hidden; /* Hide vertical scrollbar */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 code {
@@ -63,106 +64,165 @@ code {
     color: grey;
 }
 
-.topcenter {
+.bottomright {
     position: absolute;
-    top: 5%;
-    width: 100%;
+    bottom: 8px;
+    right: 16px;
+    font-size: 14px;
     color: grey;
-    /*margin: 0 auto;*/
 }
 
-ol{
-    display:inline-block;
+.bottomrightcircle {
+    border-radius: 50%;
+    height: 1em;
+    width: 1em;
+    display: inline-block;
+    text-align: left;
+    float: left;
+}
+
+.blue {
+ background-color: blue;
+}
+
+.bottomtext {
+    display: inline-block;
+    float:left;
+}
+
+.emoji {
+    display: inline-block;
+    float:left;
+    line-height: 3.4em;
+    height: 1.3em;
+    text-align: center;
+    vertical-align: center;
+    margin: 0 0.5em 0 0.2em;
+}
+
+.bottomborder {
+    display: inline-block;
     line-height: 1.3em;
-    border:solid 1px;
-    padding:0.5em;
-    padding-left:2em;
-    margin:0.5em;
+    border: solid 1px;
+    padding: 0.5em;
+    padding-left: 0.5em;
+    margin: 0.5em;
+    color: grey;
+    float:left;
 }
 
-ol.custom-bullet{
-    list-style:none;
+.verticalcenter {
+    vertical-align: center;
 }
-ol.custom-bullet >li {
-    clear:left;
+
+ol {
+    display: inline-block;
+    line-height: 1.3em;
+    border: solid 1px;
+    padding: 0.5em;
+    padding-left: 2em;
+    margin: 0.5em;
+}
+
+ol.custom-bullet {
+    list-style: none;
+}
+
+ol.custom-bullet > li {
+    clear: left;
     display: list-item;
     text-align: left;
 }
+
 ol.custom-bullet {
     counter-reset: liNum;
 }
-ol.custom-bullet > li {
-    counter-increment:liNum 1;
-}
 
-ol.custom-bullet > li:before{
-    content:counter(liNum);
-    text-align:left;
+ol.custom-bullet > li {
+    counter-increment: liNum 1;
 }
 
 ol.custom-bullet > li:before {
-    content:"";
-    height:1em;
-    width:1em;
-    display:block;
-    float:left;
-    margin-left:-1.5em;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-size:100%;
+    content: counter(liNum);
+    text-align: left;
+}
+
+ol.custom-bullet > li:before {
+    content: "";
+    height: 1em;
+    width: 1em;
+    display: block;
+    float: left;
+    margin-left: -1.5em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 ol.custom-bullet {
     counter-reset: liNum;
 }
+
 ol.custom-bullet > li {
-    counter-increment:liNum 1;
+    counter-increment: liNum 1;
 }
-ol.medals > li:nth-of-type(1):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='green' /></svg>");
+
+ol.medals > li:nth-of-type(1):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='green' /></svg>");
 }
-ol.medals > li:nth-of-type(2):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='pink' /></svg>");
+
+ol.medals > li:nth-of-type(2):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='pink' /></svg>");
 }
-ol.medals > li:nth-of-type(3):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='yellow' /></svg>");
+
+ol.medals > li:nth-of-type(3):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='yellow' /></svg>");
 }
-ol.medals > li:nth-of-type(4):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='orange' /></svg>");
+
+ol.medals > li:nth-of-type(4):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='orange' /></svg>");
 }
-ol.medals > li:nth-of-type(5):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='black' /></svg>");
+
+ol.medals > li:nth-of-type(5):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='black' /></svg>");
 }
-ol.medals > li:nth-of-type(6):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='red' /></svg>");
+
+ol.medals > li:nth-of-type(6):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='red' /></svg>");
 }
-ol.medals > li:nth-of-type(7):before{
-     content:"";
-     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='maroon' /></svg>");
- }
-ol.medals > li:nth-of-type(8):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='teal' /></svg>");
+
+ol.medals > li:nth-of-type(7):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='maroon' /></svg>");
 }
-ol.medals > li:nth-of-type(9):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='brown' /></svg>");
+
+ol.medals > li:nth-of-type(8):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='teal' /></svg>");
 }
-ol.medals > li:nth-of-type(10):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='purple' /></svg>");
+
+ol.medals > li:nth-of-type(9):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='brown' /></svg>");
 }
-ol.medals > li:nth-of-type(11):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='lime' /></svg>");
+
+ol.medals > li:nth-of-type(10):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='purple' /></svg>");
 }
-ol.medals > li:nth-of-type(12):before{
-    content:"";
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='blue' /></svg>");
+
+ol.medals > li:nth-of-type(11):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='lime' /></svg>");
+}
+
+ol.medals > li:nth-of-type(12):before {
+    content: "";
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid meet'><circle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='blue' /></svg>");
 }
