@@ -20,6 +20,7 @@ export class GraphUI extends React.Component {
     chordCount = 0;
     chordIndex = 0;
     SYNTH_PRODUCER;
+    tonePlayers = [];
 
     constructor() {
         super();
@@ -71,6 +72,14 @@ export class GraphUI extends React.Component {
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
+    loadAudioFile = async () => {
+        const audioPlayer = new Tone.Player(this.API_ROOT + "output/testloop1.mp3").toDestination();
+        audioPlayer.set({
+            volume: -20,
+        });
+
+        this.tonePlayers.push(audioPlayer);
+    }
 
     loadGraphData = async () => {
         let max = 83;
@@ -101,6 +110,8 @@ export class GraphUI extends React.Component {
                 css: "start-btn-overlay-hide",
             }
         })
+
+        await this.loadAudioFile();
         await this.loadGraphData();
         await this.loadMidiData();
         await this.renderGraph();
@@ -111,31 +122,14 @@ export class GraphUI extends React.Component {
     }
 
     startSeqence = async () => {
-        if (this.synthChordStack.length > 0) {
-            this.synthChordStack[this.synthChordStack.length - 1].unsync();
-        }
+        this.disposedUnused();
 
-        if (this.synthBassStack.length > 0) {
-            this.synthBassStack[this.synthBassStack.length - 1].unsync();
-        }
+        let noteTriggerTimeCache = [];
 
-        if (this.synthTrebleStack.length > 0) {
-            this.synthTrebleStack[this.synthTrebleStack.length - 1].unsync();
-        }
-
+        //SCHEDULE CHORD NOTES
         let chordSynth = this.SYNTH_PRODUCER.getRandomChordSynth();
         this.synthChordStack.push(chordSynth);
 
-
-        let bassSynth = this.SYNTH_PRODUCER.getRandomBassSynth();
-        this.synthBassStack.push(bassSynth);
-
-        let trebleSynth = this.SYNTH_PRODUCER.getRandomTrebleSynth();
-        this.synthTrebleStack.push(trebleSynth);
-
-        let noteCache = [];
-
-        //CHORD NOTES
         let track = this.midi.tracks[0];
         let notes = track.notes
         let curTime = -1;
@@ -144,13 +138,14 @@ export class GraphUI extends React.Component {
                 curTime = notes[i].time;
                 this.chordCount++;
             }
-
-            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteCache);
-
+            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteTriggerTimeCache);
             chordSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
-        //BASS NOTES
+        //SCHEDULE BASS NOTES
+        let bassSynth = this.SYNTH_PRODUCER.getRandomBassSynth();
+        this.synthBassStack.push(bassSynth);
+
         track = this.midi.tracks[1];
         notes = track.notes
         curTime = -1;
@@ -158,13 +153,14 @@ export class GraphUI extends React.Component {
             if (notes[i].time !== curTime) {
                 curTime = notes[i].time;
             }
-
-            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteCache);
-
+            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteTriggerTimeCache);
             bassSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
-        //TREBLE NOTES
+        //SCHEDULE TREBLE NOTES
+        let trebleSynth = this.SYNTH_PRODUCER.getRandomTrebleSynth();
+        this.synthTrebleStack.push(trebleSynth);
+
         track = this.midi.tracks[2];
         notes = track.notes
         curTime = -1;
@@ -172,14 +168,16 @@ export class GraphUI extends React.Component {
             if (notes[i].time !== curTime) {
                 curTime = notes[i].time;
             }
-
-            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteCache);
-
+            const t = this.preventTimeCollision(Tone.now() + notes[i].time, noteTriggerTimeCache);
             trebleSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
-        for (let i = 0; i < this.state.data.chordpathids.length; i++) {
+        //SCHEDULE DRUM LOOP TRIGGERS
+        //SCHEDULE NODE UI UPDATES
+        for (let i = 0; i < this.state.data.chordpathids.length + 1; i++) {
             Tone.Transport.scheduleOnce(async () => {
+                this.tonePlayers[this.tonePlayers.length -1].start();
+
                 for (let j = 0; j < this.state.data.nodes.length; j++) {
                     if (this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
                         this.state.data.nodes[j].size = 800;
@@ -191,25 +189,61 @@ export class GraphUI extends React.Component {
                 }
             }, this.preventTimeCollision(
                 new Tone.Time((this.chordCount - this.state.data.chordpathids.length) + i + ":0:0"),
-                noteCache));
+                noteTriggerTimeCache));
         }
 
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
+            await this.loadAudioFile();
             await this.loadGraphData();
             await this.loadMidiData();
-        }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":0:0"), noteCache));
+        }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":0:0"), noteTriggerTimeCache));
 
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
             await this.renderGraph();
             await this.startSeqence();
-        }, this.preventTimeCollision(new Tone.Time((this.chordCount) + ":0:0"), noteCache));
+        }, this.preventTimeCollision(new Tone.Time((this.chordCount) + ":0:0"), noteTriggerTimeCache));
+    }
+
+    disposedUnused() {
+        if (this.synthChordStack.length > 0) {
+            this.synthChordStack[this.synthChordStack.length - 1].unsync();
+            if (this.synthChordStack.length > 1) {
+                if (!this.synthChordStack[this.synthChordStack.length - 2].disposed) {
+                    this.synthChordStack[this.synthChordStack.length - 2].dispose();
+                }
+            }
+        }
+
+        if (this.synthBassStack.length > 0) {
+            this.synthBassStack[this.synthBassStack.length - 1].unsync();
+            if (this.synthBassStack.length > 1) {
+                if (!this.synthBassStack[this.synthBassStack.length - 2].disposed) {
+                    this.synthBassStack[this.synthBassStack.length - 2].dispose();
+                }
+            }
+        }
+
+        if (this.synthTrebleStack.length > 0) {
+            this.synthTrebleStack[this.synthTrebleStack.length - 1].unsync();
+            if (this.synthTrebleStack.length > 1) {
+                if (!this.synthTrebleStack[this.synthTrebleStack.length - 2].disposed) {
+                    this.synthTrebleStack[this.synthTrebleStack.length - 2].dispose();
+                }
+            }
+        }
+
+        if (this.tonePlayers.length > 1) {
+            if (!this.tonePlayers[this.tonePlayers.length - 2].disposed) {
+                this.tonePlayers[this.tonePlayers.length - 2].dispose();
+            }
+        }
     }
 
     preventTimeCollision(time, timeCache) {
         if (timeCache.includes(time)) {
-            time = time + 0.05;
+            time = time + 0.00001;
         }
 
         timeCache.push(time)
@@ -266,8 +300,6 @@ export class GraphUI extends React.Component {
             chordNoteType = startText[1].split('-');
         }
 
-        console.log('START CN:', chordNoteType)
-
         return chordNoteType[0].toUpperCase() + chordNoteType[1];
     }
 
@@ -286,8 +318,6 @@ export class GraphUI extends React.Component {
         if (startText[1]) {
             chordNoteType = startText[1].split('-');
         }
-
-        console.log('DEST CN:', chordNoteType)
 
         return chordNoteType[0].toUpperCase() + chordNoteType[1];
     }
