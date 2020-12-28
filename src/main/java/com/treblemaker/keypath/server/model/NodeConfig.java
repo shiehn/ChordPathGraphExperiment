@@ -25,7 +25,7 @@ public class NodeConfig {
     public double StrokeWidth = 1;
 
     @JsonProperty("fontColor")
-    public String FontColor = "DarkSlateGrey";
+    public String FontColor = "black";
 
     @JsonProperty("highlightStrokeColor")
     public String HighlightStrokeColor = "white";
