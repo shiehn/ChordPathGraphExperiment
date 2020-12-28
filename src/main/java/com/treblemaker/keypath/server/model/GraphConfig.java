@@ -9,8 +9,6 @@ public class GraphConfig {
     @JsonProperty("nodeHighlightBehavior")
     public boolean NodeHighlightBehavior = false;
 
-
-
     @JsonProperty("node")
     public NodeConfig NodeConfig = new NodeConfig();
 }

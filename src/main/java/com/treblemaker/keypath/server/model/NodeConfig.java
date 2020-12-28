@@ -18,6 +18,15 @@ public class NodeConfig {
     @JsonProperty("size")
     public int Size = 500;
 
+    @JsonProperty("strokeColor")
+    public String StrokeColor = "grey";
+
+    @JsonProperty("strokeWidth")
+    public double StrokeWidth = 1;
+
+    @JsonProperty("fontColor")
+    public String FontColor = "DarkSlateGrey";
+
     @JsonProperty("highlightStrokeColor")
     public String HighlightStrokeColor = "white";
 }

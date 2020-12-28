@@ -9,8 +9,12 @@
       <change beforePath="$PROJECT_DIR$/keypath-client/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keypath-client/src/Synths/SynthProducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Synths/SynthProducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keypath-client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/KeyPathConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/KeyPathConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/GraphConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/GraphConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/NodeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/NodeConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,7 +244,7 @@
       <workItem from="1608680140343" duration="8620000" />
       <workItem from="1608753697981" duration="28837000" />
       <workItem from="1608942311811" duration="55000" />
-      <workItem from="1609004542014" duration="40513000" />
+      <workItem from="1609004542014" duration="46311000" />
     </task>
     <servers />
   </component>

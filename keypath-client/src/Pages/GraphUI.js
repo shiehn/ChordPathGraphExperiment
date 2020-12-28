@@ -22,12 +22,23 @@ export class GraphUI extends React.Component {
     SYNTH_PRODUCER;
     tonePlayers = [];
 
+    currentLoop = -1;
+    currentTrebleSynth = -1;
+    currentChordSynth = -1;
+    currentBassSynth = -1;
+
     constructor() {
         super();
 
         this.SESSION_ID = uuid();
 
         this.state = {
+            shuffleSounds: {
+                loop: true,
+                treble: true,
+                chords: true,
+                bass: true,
+            },
             startBtn: {
                 isPlaying: false,
                 css: "start-btn-overlay-show",
@@ -60,8 +71,11 @@ export class GraphUI extends React.Component {
                 node: {
                     labelPosition: 'center',
                     labelProperty: "labelText",
+                    strokeColor: "grey",
+                    strokeWidth: 1,
+                    fontColor: "grey",
                     renderLabel: true,
-                    size: 500,
+                    size: 850,
                     highlightStrokeColor: "white",
                 },
             }
@@ -73,7 +87,13 @@ export class GraphUI extends React.Component {
     }
 
     loadAudioFile = async () => {
-        const audioPlayer = new Tone.Player(this.API_ROOT + "output/testloop1.mp3").toDestination();
+        let loopSelection = this.currentLoop;
+        if(this.state.shuffleSounds.loop) {
+            loopSelection = this.API_ROOT + "output/loops/" + Math.floor(Math.random() * 27) + "-loop.mp3";
+            this.currentLoop = loopSelection;
+        }
+
+        const audioPlayer = new Tone.Player(loopSelection).toDestination();
         audioPlayer.set({
             volume: -20,
         });
@@ -126,10 +146,20 @@ export class GraphUI extends React.Component {
 
         let noteTriggerTimeCache = [];
 
-        //SCHEDULE CHORD NOTES
-        let chordSynth = this.SYNTH_PRODUCER.getRandomChordSynth();
+        //SELECT CHORD SYNTH
+        let chordSynth = undefined;
+        if(this.state.shuffleSounds.chords){
+            const {selection, synth} = this.SYNTH_PRODUCER.getRandomChordSynth();
+            this.currentChordSynth = selection;
+            chordSynth = synth;
+        } else {
+            const {selection, synth} = this.SYNTH_PRODUCER.getChordSynth(this.currentChordSynth);
+            this.currentChordSynth = selection;
+            chordSynth = synth;
+        }
         this.synthChordStack.push(chordSynth);
 
+        //SCHEDULE CHORD NOTES
         let track = this.midi.tracks[0];
         let notes = track.notes
         let curTime = -1;
@@ -142,10 +172,20 @@ export class GraphUI extends React.Component {
             chordSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
-        //SCHEDULE BASS NOTES
-        let bassSynth = this.SYNTH_PRODUCER.getRandomBassSynth();
+        //SELECT BASS SYNTH
+        let bassSynth = undefined;
+        if(this.state.shuffleSounds.bass){
+            const {selection, synth} = this.SYNTH_PRODUCER.getRandomBassSynth();
+            this.currentBassSynth = selection;
+            bassSynth = synth;
+        } else {
+            const {selection, synth} = this.SYNTH_PRODUCER.getBassSynth(this.currentBassSynth);
+            this.currentBassSynth = selection;
+            bassSynth = synth;
+        }
         this.synthBassStack.push(bassSynth);
 
+        //SCHEDULE BASS NOTES
         track = this.midi.tracks[1];
         notes = track.notes
         curTime = -1;
@@ -157,10 +197,20 @@ export class GraphUI extends React.Component {
             bassSynth.triggerAttackRelease(notes[i].name, notes[i].duration, t, 0.5)
         }
 
-        //SCHEDULE TREBLE NOTES
-        let trebleSynth = this.SYNTH_PRODUCER.getRandomTrebleSynth();
+        //SELECT TREBLE SYNTH
+        let trebleSynth = undefined;
+        if(this.state.shuffleSounds.treble){
+            const {selection, synth} = this.SYNTH_PRODUCER.getRandomTrebleSynth();
+            this.currentTrebleSynth = selection;
+            trebleSynth = synth;
+        } else {
+            const {selection, synth} = this.SYNTH_PRODUCER.getTrebleSynth(this.currentBassSynth);
+            this.currentTrebleSynth = selection;
+            trebleSynth = synth;
+        }
         this.synthTrebleStack.push(trebleSynth);
 
+        //SCHEDULE TREBLE NOTES
         track = this.midi.tracks[2];
         notes = track.notes
         curTime = -1;
@@ -176,7 +226,7 @@ export class GraphUI extends React.Component {
         //SCHEDULE NODE UI UPDATES
         for (let i = 0; i < this.state.data.chordpathids.length + 1; i++) {
             Tone.Transport.scheduleOnce(async () => {
-                this.tonePlayers[this.tonePlayers.length -1].start();
+                this.tonePlayers[this.tonePlayers.length - 1].start();
 
                 for (let j = 0; j < this.state.data.nodes.length; j++) {
                     if (this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
@@ -194,6 +244,7 @@ export class GraphUI extends React.Component {
 
         Tone.Transport.scheduleOnce(async () => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
+            this.shuffleSounds();
             await this.loadAudioFile();
             await this.loadGraphData();
             await this.loadMidiData();
@@ -204,6 +255,21 @@ export class GraphUI extends React.Component {
             await this.renderGraph();
             await this.startSeqence();
         }, this.preventTimeCollision(new Tone.Time((this.chordCount) + ":0:0"), noteTriggerTimeCache));
+    }
+
+    shouldShuffle() {
+        return Math.random() < 0.5
+    }
+
+    shuffleSounds() {
+        this.setState({
+            ...this.state, shuffleSounds: {
+                loop: this.shouldShuffle(),
+                treble: this.shouldShuffle(),
+                chords: this.shouldShuffle(),
+                bass: this.shouldShuffle(),
+            }
+        })
     }
 
     disposedUnused() {
@@ -285,7 +351,7 @@ export class GraphUI extends React.Component {
     }
 
     getStartText() {
-        if(this.state.data.chordpathids === undefined) {
+        if (this.state.data.chordpathids === undefined) {
             return "";
         }
 
@@ -304,9 +370,9 @@ export class GraphUI extends React.Component {
     }
 
     getDestinationText() {
-       if(!this.state.data.idkeychordmap) {
-           return "";
-       }
+        if (!this.state.data.idkeychordmap) {
+            return "";
+        }
 
         let startText = ["", ""];
         const keyChord = this.state.data.idkeychordmap[this.PATH_DESTINATION];
@@ -322,8 +388,8 @@ export class GraphUI extends React.Component {
         return chordNoteType[0].toUpperCase() + chordNoteType[1];
     }
 
-    getColorFromKey(key){
-        switch(key) {
+    getColorFromKey(key) {
+        switch (key) {
             case "a":
                 return "green";
             case "a#":
@@ -353,8 +419,8 @@ export class GraphUI extends React.Component {
         }
     }
 
-    getStartColor(){
-        if(this.state.data.chordpathids === undefined) {
+    getStartColor() {
+        if (this.state.data.chordpathids === undefined) {
             return "";
         }
 
@@ -367,8 +433,8 @@ export class GraphUI extends React.Component {
         return this.getColorFromKey(startText[0])
     }
 
-    getDestinationColor(){
-        if(this.state.data.chordpathids === undefined) {
+    getDestinationColor() {
+        if (this.state.data.chordpathids === undefined) {
             return "";
         }
 

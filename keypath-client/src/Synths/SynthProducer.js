@@ -3,45 +3,49 @@ import * as Tone from "tone";
 export default class SynthProducer {
     getRandomBassSynth() {
         const numOfSynths = 4;
-        let bassSynth;
         const selection = Math.floor(Math.random() * numOfSynths);
-        // console.log("BASS-SYNTH", selection)
+        return this.getBassSynth(selection);
+    }
+
+    getBassSynth(selection) {
+        let bassSynth;
         switch (selection) {
-            //     switch (3) {
             case 0:
                 bassSynth = new Tone.AMSynth();
                 bassSynth.toDestination();
                 bassSynth.volume.value = -8;
 
-                return bassSynth;
+                return {selection: selection, synth: bassSynth};
             case 1:
                 bassSynth = new Tone.FMSynth();
                 bassSynth.toDestination();
                 bassSynth.volume.value = -15;
 
-                return bassSynth;
+                return {selection: selection, synth: bassSynth};
             case 2:
                 bassSynth = new Tone.MonoSynth();
                 bassSynth.toDestination();
                 bassSynth.volume.value = -25;
 
-                return bassSynth;
+                return {selection: selection, synth: bassSynth};
             case 3:
                 bassSynth = new Tone.Synth();
                 bassSynth.toDestination();
                 bassSynth.volume.value = -10;
 
-                return bassSynth;
+                return {selection: selection, synth: bassSynth};
         }
     }
 
     getRandomChordSynth() {
         const numOfSynths = 3;
-        let chordSynth;
         const selection = Math.floor(Math.random() * numOfSynths);
-        // console.log("CHORD-SYNTH", selection)
+        return this.getChordSynth(selection);
+    }
+
+    getChordSynth(selection) {
+        let chordSynth;
         switch (selection) {
-            // switch (2) {
             case 0:
                 chordSynth = new Tone.AMSynth().toDestination();
                 chordSynth.volume.value = -30;
@@ -56,7 +60,7 @@ export default class SynthProducer {
                 const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
 
                 chordSynth.chain(pingPong, autoWah, phaser, tremolo);
-                return chordSynth;
+                return {selection: selection, synth: chordSynth};
             case 1:
                 chordSynth = new Tone.PolySynth().toDestination();
                 chordSynth.volume.value = -20;
@@ -65,7 +69,7 @@ export default class SynthProducer {
                 const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
 
                 chordSynth.chain(autoFilter, feedbackDelay);
-                return chordSynth;
+                return {selection: selection, synth: chordSynth};
             case 2:
                 chordSynth = new Tone.PolySynth().toDestination();
                 chordSynth.volume.value = -40;
@@ -74,20 +78,22 @@ export default class SynthProducer {
                 const reverb = new Tone.JCReverb(0.7).toDestination();
 
                 chordSynth.chain(chorus, reverb);
-                return chordSynth;
+                return {selection: selection, synth: chordSynth};
         }
     }
 
     getRandomTrebleSynth() {
         const numOfSynths = 4;
-        let chordSynth;
         const selection = Math.floor(Math.random() * numOfSynths);
-        // console.log("TREBLE-SYNTH", selection)
+        return this.getTrebleSynth(selection);
+    }
+
+    getTrebleSynth(selection) {
+        let trebleSynth;
         switch (selection) {
-        // switch (2) {
             case 0:
-                chordSynth = new Tone.AMSynth().toDestination();
-                chordSynth.volume.value = -30;
+                trebleSynth = new Tone.AMSynth().toDestination();
+                trebleSynth.volume.value = -30;
 
                 const tremolo = new Tone.Tremolo(4, 0.75).toDestination().start();
                 const phaser = new Tone.Phaser({
@@ -98,23 +104,23 @@ export default class SynthProducer {
                 const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
                 const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
 
-                chordSynth.chain(pingPong, autoWah, phaser, tremolo);
+                trebleSynth.chain(pingPong, autoWah, phaser, tremolo);
 
-                return chordSynth;
+                return {selection: selection, synth: trebleSynth};
             case 1:
-                chordSynth = new Tone.PolySynth().toDestination();
-                chordSynth.volume.value = -30;
+                trebleSynth = new Tone.PolySynth().toDestination();
+                trebleSynth.volume.value = -30;
 
                 const autoFilter = new Tone.AutoFilter("4n").toDestination().start();
                 // const cheby = new Tone.Chebyshev(50).toDestination();
                 const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
 
-                chordSynth.chain(autoFilter, feedbackDelay);
+                trebleSynth.chain(autoFilter, feedbackDelay);
 
-                return chordSynth;
+                return {selection: selection, synth: trebleSynth};
             case 2:
-                chordSynth = new Tone.MonoSynth().toDestination();
-                chordSynth.volume.value = -40;
+                trebleSynth = new Tone.MonoSynth().toDestination();
+                trebleSynth.volume.value = -40;
 
                 //const autoFilter = new Tone.AutoFilter("4n").toDestination().start();
                 // const cheby = new Tone.Chebyshev(50).toDestination();
@@ -124,12 +130,12 @@ export default class SynthProducer {
                 // const autoWah1 = new Tone.AutoWah(50, 6, -30).toDestination();
                 const pingPong1 = new Tone.PingPongDelay("4n", 0.1).toDestination();
 
-                chordSynth.chain(pingPong1, reverb);
+                trebleSynth.chain(pingPong1, reverb);
 
-                return chordSynth;
+                return {selection: selection, synth: trebleSynth};
             case 3:
-                chordSynth = new Tone.MembraneSynth().toDestination();
-                chordSynth.volume.value = -50;
+                trebleSynth = new Tone.MembraneSynth().toDestination();
+                trebleSynth.volume.value = -50;
 
                 //const autoFilter = new Tone.AutoFilter("4n").toDestination().start();
                 // const cheby = new Tone.Chebyshev(50).toDestination();
@@ -140,9 +146,9 @@ export default class SynthProducer {
                 // const pingPong2 = new Tone.PingPongDelay("4n", 0.1).toDestination();
                 // const feedbackDelay1 = new Tone.FeedbackDelay("1m", 0.1).toDestination();
                 // const tremol1 = new Tone.Tremolo(4, 0.75).toDestination().start();
-                chordSynth.chain(reverb1);
+                trebleSynth.chain(reverb1);
 
-                return chordSynth;
+                return {selection: selection, synth: trebleSynth};
         }
     }
 }

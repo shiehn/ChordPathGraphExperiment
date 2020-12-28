@@ -145,7 +145,7 @@ public class ChordGraph {
         List<IdKeyNote> nodes = this.keyMembers.getAllKeys();
         for (int i=0; i<nodes.size(); i++) {
            if(chordPathIds.get(0) == nodes.get(i).Id){
-               nodes.get(i).Size = 800;
+               nodes.get(i).Size = 850;
                nodes.get(i).Color = "white";
                break;
            }
