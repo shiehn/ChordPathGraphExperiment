@@ -75,6 +75,10 @@ public class MidiDB {
         });
 
         for (File f : directories) {
+            if(f.getName().contains("loops")) {
+                continue;
+            }
+
             File[] midiFiles = new File(f.getAbsolutePath()).listFiles(new FileFilter() {
                 @Override
                 public boolean accept(File file) {
