@@ -6,8 +6,8 @@ import ReactGA from 'react-ga';
 
 
 function App() {
-    ReactGA.initialize('G-DBGR5B659W');
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    // ReactGA.initialize('G-DBGR5B659W');
+    // ReactGA.pageview(window.location.pathname + window.location.search);
 
     return (
         <Router>
