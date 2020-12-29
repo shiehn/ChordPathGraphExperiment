@@ -3,11 +3,10 @@ import {Route, BrowserRouter as Router, Link} from "react-router-dom";
 import {GraphUI} from './Pages/GraphUI'
 import ReactGA from 'react-ga';
 
-
+ReactGA.initialize('UA-186279434-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 function App() {
-    ReactGA.initialize('G-DBGR5B659W');
-    ReactGA.pageview(window.location.pathname + window.location.search);
 
     return (
         <Router>
