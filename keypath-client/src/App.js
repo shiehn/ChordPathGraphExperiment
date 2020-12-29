@@ -6,10 +6,6 @@ import ReactGA from 'react-ga';
 ReactGA.initialize('G-DBGR5B659W');
 
 function App() {
-    useEffect( () => {
-        ReactGA.pageview(window.location.pathname + window.location.search);
-    });
-
     return (
         <Router>
             <div className="App">

@@ -5,6 +5,7 @@ import * as Tone from 'tone'
 import uuid from 'react-uuid'
 import {Midi} from '@tonejs/midi'
 import SynthProducer from "../Synths/SynthProducer";
+import ReactGA from 'react-ga';
 
 export class GraphUI extends React.Component {
     SESSION_ID = undefined;
@@ -332,11 +333,15 @@ export class GraphUI extends React.Component {
         resp.data.myconfig.height = this.getHeight();
 
         this.setState({...this.state, data: resp.data.data, myconfig: resp.data.myconfig, loading: false})
+
+        ReactGA.pageview(window.location.pathname + window.location.search)
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
+
+    componentDidUpdate = () => ReactGA.pageview(window.location.pathname + window.location.search);
 
     updateWindowDimensions() {
         this.setState({...this.state.myconfig, width: this.getWidth(), height: this.getHeight()});
