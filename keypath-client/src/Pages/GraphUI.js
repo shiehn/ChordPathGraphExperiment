@@ -5,7 +5,6 @@ import * as Tone from 'tone'
 import uuid from 'react-uuid'
 import {Midi} from '@tonejs/midi'
 import SynthProducer from "../Synths/SynthProducer";
-import ReactGA from 'react-ga';
 
 export class GraphUI extends React.Component {
     SESSION_ID = undefined;
