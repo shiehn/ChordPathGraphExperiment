@@ -3,9 +3,12 @@ import {Route, BrowserRouter as Router, Link} from "react-router-dom";
 import {GraphUI} from './Pages/GraphUI'
 import ReactGA from 'react-ga';
 
-ReactGA.initialize('G-DBGR5B659W');
+
 
 function App() {
+    ReactGA.initialize('G-DBGR5B659W');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
     return (
         <Router>
             <div className="App">
