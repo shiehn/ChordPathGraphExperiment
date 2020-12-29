@@ -4,7 +4,7 @@ import {GraphUI} from './Pages/GraphUI'
 import ReactGA from 'react-ga';
 
 function App() {
-    ReactGA.initialize('YOUR GOOGLE ANALYTICS ID');
+    ReactGA.initialize('G-DBGR5B659W');
     ReactGA.pageview('SignalsAndSorcery');
 
     return (
