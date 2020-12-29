@@ -1,9 +1,12 @@
 import './App.css';
 import {Route, BrowserRouter as Router, Link} from "react-router-dom";
 import {GraphUI} from './Pages/GraphUI'
-import ListGroup from 'react-bootstrap/ListGroup'
+import ReactGA from 'react-ga';
 
 function App() {
+    ReactGA.initialize('YOUR GOOGLE ANALYTICS ID');
+    ReactGA.pageview('SignalsAndSorcery');
+
     return (
         <Router>
             <div className="App">
