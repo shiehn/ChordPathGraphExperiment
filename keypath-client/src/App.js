@@ -23,4 +23,4 @@ function App() {
     );
 }
 
-export default App;
+export default withRouter(App);
