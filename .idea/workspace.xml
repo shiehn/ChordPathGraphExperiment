@@ -6,15 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="4599abeb-6977-43df-bfb2-1682dc58be1d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/.eslintcache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keypath-client/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Pages/GraphUI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/Synths/SynthProducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/Synths/SynthProducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keypath-client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/keypath-client/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/graph/ChordGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/GraphConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/GraphConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/NodeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/treblemaker/keypath/server/model/NodeConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,9 +73,9 @@
       <recent name="$PROJECT_DIR$/src/main/java/com" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/output" />
       <recent name="$PROJECT_DIR$/keypath-client/src" />
-      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/java/com" />
       <recent name="$PROJECT_DIR$/src/main/resources/static" />
     </key>

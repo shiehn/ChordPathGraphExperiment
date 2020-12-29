@@ -19,7 +19,7 @@
   },
   "proxy": {
     "/api": {
-      "target": "http://34.122.124.254:80",
+      "target": "http://localhost:80",
       "ws": true
     }
   },

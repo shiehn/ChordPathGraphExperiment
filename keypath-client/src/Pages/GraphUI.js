@@ -8,8 +8,8 @@ import SynthProducer from "../Synths/SynthProducer";
 
 export class GraphUI extends React.Component {
     SESSION_ID = undefined;
-    API_ROOT = "http://34.122.124.254:80/"
-    // API_ROOT = "http://localhost:80/"
+    // API_ROOT = "http://34.122.124.254:80/"
+    API_ROOT = "http://localhost:80/"
     PATH_ORIGIN = 0;
     PATH_DESTINATION = 83;
     synthChordStack = [];

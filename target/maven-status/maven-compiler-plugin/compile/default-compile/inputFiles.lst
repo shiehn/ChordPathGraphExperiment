@@ -39,6 +39,7 @@
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/theory/Scale.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/tools/GetPatternStats.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/com/treblemaker/keypath/graph/ChordPaths.java
+/Users/hiehn/TrebleMakerKeyPath/src/main/java/com/treblemaker/keypath/server/model/GraphConfig.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/integration/MusicXmlParser.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/player/EndOfTrackListener.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/staccato/TempoSubparser.java
@@ -81,6 +82,7 @@
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/player/SynthesizerManager.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/theory/Intervals.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/provider/NoteProviderFactory.java
+/Users/hiehn/TrebleMakerKeyPath/src/main/java/com/treblemaker/keypath/server/model/NodeConfig.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/devices/MusicTransmitterToSequence.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/parser/ParserListener.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/staccato/functions/FunctionManager.java
@@ -89,6 +91,7 @@
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/staccato/CollectedNotesPreprocessor.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/pattern/NoteProducer.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/integration/MusicXmlParserListener.java
+/Users/hiehn/TrebleMakerKeyPath/src/main/java/com/treblemaker/keypath/server/model/GraphData.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/staccato/Preprocessor.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/org/jfugue/pattern/ReplacementFormatUtil.java
 /Users/hiehn/TrebleMakerKeyPath/src/main/java/com/treblemaker/generator/melody/CharacterIterator.java
