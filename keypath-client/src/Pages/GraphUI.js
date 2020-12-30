@@ -141,7 +141,7 @@ export class GraphUI extends React.Component {
         await this.renderGraph();
         await this.startSeqence();
 
-        Tone.Transport.bpm.value = 60
+        Tone.Transport.bpm.value = 60;
         Tone.Transport.start();
     }
 
@@ -227,20 +227,24 @@ export class GraphUI extends React.Component {
         }
 
         //SCHEDULE DRUM LOOP TRIGGERS
-        //SCHEDULE NODE UI UPDATES
         for (let i = 0; i < this.state.data.chordpathids.length + 1; i++) {
-            Tone.Transport.scheduleOnce(async (time) => {
+            Tone.Transport.scheduleOnce(async () => {
                 this.tonePlayers[this.tonePlayers.length - 1].start();
+            }, this.preventTimeCollision(
+                new Tone.Time((this.chordCount - this.state.data.chordpathids.length) + i + ":0:0"),
+                noteTriggerTimeCache));
+        }
 
+        //SCHEDULE NODE UI UPDATES
+        for (let i = 0; i < this.state.data.chordpathids.length; i++) {
+            Tone.Transport.scheduleOnce(async (time) => {
                 for (let j = 0; j < this.state.data.nodes.length; j++) {
                     if (this.state.data.nodes[j].id === this.state.data.chordpathids[i]) {
-                        this.state.data.nodes[j].size = 800;
-                        this.state.data.nodes[j].color = "white";
-
-                        Tone.Draw.schedule(async () => {
-                            await this.renderNodes();
-                        }, time);
-
+                            this.state.data.nodes[j].size = 800;
+                            this.state.data.nodes[j].color = "white";
+                            Tone.Draw.schedule(async () => {
+                                await this.renderNodes();
+                            }, this.preventTimeCollision(time, noteTriggerTimeCache));
                         break;
                     }
                 }
@@ -250,22 +254,24 @@ export class GraphUI extends React.Component {
         }
 
         Tone.Transport.scheduleOnce(async (time) => {
-            //START THE NEW PROGRESSION AT THE END OF THE LAST
+            //START THE NEW PROGRESSION AT START OF LAST BAR
             Tone.Draw.schedule(async () => {
                 this.shuffleSounds();
                 await this.loadAudioFile();
                 await this.loadGraphData();
                 await this.loadMidiData();
-            }, time);
+            }, this.preventTimeCollision(time, noteTriggerTimeCache));
         }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":0:0"), noteTriggerTimeCache));
 
         Tone.Transport.scheduleOnce(async (time) => {
+            // REDRAW THE GRAPH ON THE LAST BEAT OF THE LAST BAR
             Tone.Draw.schedule(async () => {
                 await this.renderGraph();
-            }, time);
+            }, this.preventTimeCollision(time, noteTriggerTimeCache));
         }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":3:0"), noteTriggerTimeCache));
 
         Tone.Transport.scheduleOnce(async (time) => {
+            //START THE NEW SEQUENCE AT THE FIRST BAR
             await this.startSeqence();
         }, this.preventTimeCollision(new Tone.Time((this.chordCount) + ":0:0"), noteTriggerTimeCache));
     }
@@ -290,6 +296,7 @@ export class GraphUI extends React.Component {
             this.synthChordStack[this.synthChordStack.length - 1].unsync();
             if (this.synthChordStack.length > 1) {
                 if (!this.synthChordStack[this.synthChordStack.length - 2].disposed) {
+                    this.synthChordStack[this.synthChordStack.length - 2].disconnect();
                     this.synthChordStack[this.synthChordStack.length - 2].dispose();
                     this.synthChordStack[this.synthChordStack.length - 2] = null;
                 }
@@ -300,6 +307,7 @@ export class GraphUI extends React.Component {
             this.synthBassStack[this.synthBassStack.length - 1].unsync();
             if (this.synthBassStack.length > 1) {
                 if (!this.synthBassStack[this.synthBassStack.length - 2].disposed) {
+                    this.synthBassStack[this.synthBassStack.length - 2].disconnect();
                     this.synthBassStack[this.synthBassStack.length - 2].dispose();
                     this.synthBassStack[this.synthBassStack.length - 2] = null;
                 }
@@ -310,6 +318,7 @@ export class GraphUI extends React.Component {
             this.synthTrebleStack[this.synthTrebleStack.length - 1].unsync();
             if (this.synthTrebleStack.length > 1) {
                 if (!this.synthTrebleStack[this.synthTrebleStack.length - 2].disposed) {
+                    this.synthTrebleStack[this.synthTrebleStack.length - 2].disconnect();
                     this.synthTrebleStack[this.synthTrebleStack.length - 2].dispose();
                     this.synthTrebleStack[this.synthTrebleStack.length - 2] = null;
                 }
@@ -318,6 +327,8 @@ export class GraphUI extends React.Component {
 
         if (this.tonePlayers.length > 1) {
             if (!this.tonePlayers[this.tonePlayers.length - 2].disposed) {
+                this.tonePlayers[this.tonePlayers.length - 2].disconnect();
+                this.tonePlayers[this.tonePlayers.length - 2].buffer.dispose();
                 this.tonePlayers[this.tonePlayers.length - 2].dispose();
                 this.tonePlayers[this.tonePlayers.length - 2] = null;
             }

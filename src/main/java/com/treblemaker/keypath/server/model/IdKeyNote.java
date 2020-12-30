@@ -35,8 +35,8 @@ public class IdKeyNote {
         this.Key = key;
         this.Note = note;
         this.Chord = chord;
-        this.KeyNoteChord = this.Key + "," + this.Note + "-" + this.Chord;
         this.LabelText = this.Note.toUpperCase() + updateChordType(this.Chord);
+        this.LabelText = Integer.toString(id);
         this.Color = color;
     }
 
