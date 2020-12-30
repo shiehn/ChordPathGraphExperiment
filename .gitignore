@@ -65,3 +65,5 @@ packages/react-devtools-scheduling-profiler/dist
 output/*
 keypath-client/node_modules
 target/node
+
+keypath-client/.eslintcache

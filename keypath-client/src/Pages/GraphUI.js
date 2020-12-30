@@ -88,7 +88,7 @@ export class GraphUI extends React.Component {
 
     loadAudioFile = async () => {
         let loopSelection = this.currentLoop;
-        if(this.state.shuffleSounds.loop) {
+        if (this.state.shuffleSounds.loop) {
             loopSelection = this.API_ROOT + "output/loops/" + Math.floor(Math.random() * 27) + "-loop.mp3";
             this.currentLoop = loopSelection;
         }
@@ -113,6 +113,10 @@ export class GraphUI extends React.Component {
 
     loadMidiData = async () => {
         this.midi = await Midi.fromUrl(`${this.API_ROOT}${this.graphData.midi}`);
+    }
+
+    renderNodes = async () => {
+        this.setState({...this.state.data, nodes: this.state.data.nodes})
     }
 
     renderGraph = async () => {
@@ -148,7 +152,7 @@ export class GraphUI extends React.Component {
 
         //SELECT CHORD SYNTH
         let chordSynth = undefined;
-        if(this.state.shuffleSounds.chords){
+        if (this.state.shuffleSounds.chords) {
             const {selection, synth} = this.SYNTH_PRODUCER.getRandomChordSynth();
             this.currentChordSynth = selection;
             chordSynth = synth;
@@ -174,7 +178,7 @@ export class GraphUI extends React.Component {
 
         //SELECT BASS SYNTH
         let bassSynth = undefined;
-        if(this.state.shuffleSounds.bass){
+        if (this.state.shuffleSounds.bass) {
             const {selection, synth} = this.SYNTH_PRODUCER.getRandomBassSynth();
             this.currentBassSynth = selection;
             bassSynth = synth;
@@ -199,7 +203,7 @@ export class GraphUI extends React.Component {
 
         //SELECT TREBLE SYNTH
         let trebleSynth = undefined;
-        if(this.state.shuffleSounds.treble){
+        if (this.state.shuffleSounds.treble) {
             const {selection, synth} = this.SYNTH_PRODUCER.getRandomTrebleSynth();
             this.currentTrebleSynth = selection;
             trebleSynth = synth;
@@ -225,7 +229,7 @@ export class GraphUI extends React.Component {
         //SCHEDULE DRUM LOOP TRIGGERS
         //SCHEDULE NODE UI UPDATES
         for (let i = 0; i < this.state.data.chordpathids.length + 1; i++) {
-            Tone.Transport.scheduleOnce(async () => {
+            Tone.Transport.scheduleOnce(async (time) => {
                 this.tonePlayers[this.tonePlayers.length - 1].start();
 
                 for (let j = 0; j < this.state.data.nodes.length; j++) {
@@ -233,7 +237,10 @@ export class GraphUI extends React.Component {
                         this.state.data.nodes[j].size = 800;
                         this.state.data.nodes[j].color = "white";
 
-                        this.setState({...this.state.data, nodes: this.state.data.nodes})
+                        Tone.Draw.schedule(async () => {
+                            await this.renderNodes();
+                        }, time);
+
                         break;
                     }
                 }
@@ -242,17 +249,23 @@ export class GraphUI extends React.Component {
                 noteTriggerTimeCache));
         }
 
-        Tone.Transport.scheduleOnce(async () => {
+        Tone.Transport.scheduleOnce(async (time) => {
             //START THE NEW PROGRESSION AT THE END OF THE LAST
-            this.shuffleSounds();
-            await this.loadAudioFile();
-            await this.loadGraphData();
-            await this.loadMidiData();
+            Tone.Draw.schedule(async () => {
+                this.shuffleSounds();
+                await this.loadAudioFile();
+                await this.loadGraphData();
+                await this.loadMidiData();
+            }, time);
         }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":0:0"), noteTriggerTimeCache));
 
-        Tone.Transport.scheduleOnce(async () => {
-            //START THE NEW PROGRESSION AT THE END OF THE LAST
-            await this.renderGraph();
+        Tone.Transport.scheduleOnce(async (time) => {
+            Tone.Draw.schedule(async () => {
+                await this.renderGraph();
+            }, time);
+        }, this.preventTimeCollision(new Tone.Time((this.chordCount - 1) + ":3:0"), noteTriggerTimeCache));
+
+        Tone.Transport.scheduleOnce(async (time) => {
             await this.startSeqence();
         }, this.preventTimeCollision(new Tone.Time((this.chordCount) + ":0:0"), noteTriggerTimeCache));
     }
@@ -278,6 +291,7 @@ export class GraphUI extends React.Component {
             if (this.synthChordStack.length > 1) {
                 if (!this.synthChordStack[this.synthChordStack.length - 2].disposed) {
                     this.synthChordStack[this.synthChordStack.length - 2].dispose();
+                    this.synthChordStack[this.synthChordStack.length - 2] = null;
                 }
             }
         }
@@ -287,6 +301,7 @@ export class GraphUI extends React.Component {
             if (this.synthBassStack.length > 1) {
                 if (!this.synthBassStack[this.synthBassStack.length - 2].disposed) {
                     this.synthBassStack[this.synthBassStack.length - 2].dispose();
+                    this.synthBassStack[this.synthBassStack.length - 2] = null;
                 }
             }
         }
@@ -296,6 +311,7 @@ export class GraphUI extends React.Component {
             if (this.synthTrebleStack.length > 1) {
                 if (!this.synthTrebleStack[this.synthTrebleStack.length - 2].disposed) {
                     this.synthTrebleStack[this.synthTrebleStack.length - 2].dispose();
+                    this.synthTrebleStack[this.synthTrebleStack.length - 2] = null;
                 }
             }
         }
@@ -303,6 +319,7 @@ export class GraphUI extends React.Component {
         if (this.tonePlayers.length > 1) {
             if (!this.tonePlayers[this.tonePlayers.length - 2].disposed) {
                 this.tonePlayers[this.tonePlayers.length - 2].dispose();
+                this.tonePlayers[this.tonePlayers.length - 2] = null;
             }
         }
     }
