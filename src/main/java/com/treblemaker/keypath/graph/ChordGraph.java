@@ -1,16 +1,12 @@
 package com.treblemaker.keypath.graph;
 
 import com.treblemaker.keypath.database.MidiDB;
+import com.treblemaker.keypath.midi.Midi;
 import com.treblemaker.keypath.server.model.IdKeyNote;
 import com.treblemaker.keypath.server.model.Link;
 import com.treblemaker.keypath.server.model.RenderData;
-import org.jfugue.midi.MidiFileManager;
 import org.jfugue.pattern.Pattern;
-import org.jfugue.pattern.PatternProducer;
-import org.jfugue.player.Player;
-import play.mvc.WebSocket;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,125 +16,44 @@ public class ChordGraph {
     private ChordPaths chordPaths;
     private ChordEdges chordEdges;
     private MidiDB midiDB;
+    private Midi midi;
 
     public ChordGraph() {
         this.keyMembers = new KeyMembers();
         this.chordPaths = new ChordPaths();
         this.chordEdges = new ChordEdges();
         this.midiDB = new MidiDB();
+        this.midi = new Midi(this.midiDB, this.keyMembers);
     }
 
-    public RenderData createGraph(String sessionId, Integer origin, Integer destination) throws IOException {
+    public RenderData create(String sessionId, Integer origin, Integer destination) throws IOException {
         List<Link> edges = this.chordEdges.createEdges(this.keyMembers.getKeyNoteMap());
         List<Link> chordPath = this.chordPaths.generateChordPath(edges, this.keyMembers, origin, destination);
+        edges = this.chordPaths.addOrUpdateChordPathLinks(chordPath, edges);
+
+        List<Integer> chordPathIds = getChordPathIds(chordPath);
+        List<IdKeyNote> nodes = markFirstNodeOnPath(chordPathIds);
+
+        RenderData renderData = new RenderData(nodes, edges, origin, destination, this.keyMembers.getIdToKeyChordLookup(), chordPathIds);
+
+        Pattern chordPattern = this.midi.createChordPattern(chordPathIds);
+        Pattern bassPattern = this.midi.createBassPattern(chordPathIds);
+        Pattern treblePattern = this.midi.createTreblePattern(chordPathIds);
+
+        return this.midi.saveMidiFile(renderData, chordPattern, bassPattern, treblePattern, sessionId);
+    }
+
+    private List<Integer> getChordPathIds(List<Link> chordPath) {
         List<Integer> chordPathIds = new ArrayList<>();
 
-        for (int i=0; i<chordPath.size(); i++) {
+        for (int i = 0; i< chordPath.size(); i++) {
             if(i == 0){
                 chordPathIds.add(chordPath.get(i).Source);
             }
 
             chordPathIds.add(chordPath.get(i).Target);
         }
-
-        edges = this.chordPaths.addOrUpdateChordPathLinks(chordPath, edges);
-
-        //INCREASE THE SIZE OF THE FIRST NODE:
-        List<IdKeyNote> nodes = markFirstNodeOnPath(chordPathIds);
-
-        RenderData renderData = new RenderData(nodes, edges, origin, destination, this.keyMembers.getIdToKeyChordLookup(), chordPathIds);
-
-        String chordStrPattern = createChordStrPattern(chordPath);
-        String bassStrPattern = createBassStrPattern(chordPath);
-        String trebleStrPattern = createTrebleStrPattern(chordPath);
-
-        System.out.println("************************************************");
-        System.out.println(chordStrPattern);
-        System.out.println(bassStrPattern);
-        System.out.println("************************************************");
-
-        Pattern chordPattern = new Pattern("V0 I[Piano] " + chordStrPattern).setTempo(60);
-        Pattern bassPattern = new Pattern("V1 I[Cello] " + bassStrPattern).setTempo(60);
-        Pattern treblePattern = new Pattern("V2 I[Flute] " + trebleStrPattern).setTempo(60);;
-
-        return saveMidiFile(renderData, chordPattern, bassPattern, treblePattern, sessionId);
-    }
-
-    private String createChordStrPattern(List<Link> chordPath) {
-        String chordString = "";
-        for(int i = 0; i< chordPath.size(); i++){
-            if(i == 0) {
-                chordString = this.keyMembers.getById(chordPath.get(i).Source).Note;
-                chordString = chordString + this.keyMembers.getById(chordPath.get(i).Source).Chord + "w ";
-            }
-
-            chordString = chordString + this.keyMembers.getById(chordPath.get(i).Target).Note;
-            chordString = chordString + this.keyMembers.getById(chordPath.get(i).Target).Chord + "w ";
-        }
-        return chordString.trim();
-    }
-
-    private String createBassStrPattern(List<Link> chordPath) {
-        String OCTAVE = "2";
-
-        Map<String, Integer> rhythmTypes = new HashMap<>();
-        rhythmTypes.put("q ", 4);
-        rhythmTypes.put("h ", 2);
-        rhythmTypes.put("w ", 1);
-
-        Set<String> keySet = rhythmTypes.keySet();
-        List<String> keyList = new ArrayList<>(keySet);
-
-        int randIdx = new Random().nextInt(keyList.size());
-        String randomRhytmType = keyList.get(randIdx);
-        Integer randomValue = rhythmTypes.get(randomRhytmType);
-
-        String bassString = "";
-        for(int i = 0; i< chordPath.size(); i++){
-            if(i == 0) {
-                for(int j=0; j<randomValue; j++) {
-                    bassString = bassString + this.keyMembers.getById(chordPath.get(i).Source).Note + OCTAVE + randomRhytmType;
-                }
-            }
-
-            for(int j=0; j<randomValue; j++) {
-                bassString = bassString + this.keyMembers.getById(chordPath.get(i).Target).Note + OCTAVE + randomRhytmType;
-            }
-        }
-
-        return bassString.trim();
-    }
-
-    private String createTrebleStrPattern(List<Link> chordPath) {
-        String OCTAVE = "6";
-
-        Map<String, Integer> rhythmTypes = new HashMap<>();
-        rhythmTypes.put("i ", 8);
-        rhythmTypes.put("q ", 4);
-        rhythmTypes.put("h ", 2);
-        rhythmTypes.put("w ", 1);
-
-        Set<String> keySet = rhythmTypes.keySet();
-        List<String> keyList = new ArrayList<>(keySet);
-
-        int randIdx = new Random().nextInt(keyList.size());
-        String randomRhytmType = keyList.get(randIdx);
-        Integer randomValue = rhythmTypes.get(randomRhytmType);
-
-        String trebleString = "";
-        for(int i = 0; i< chordPath.size(); i++){
-            if(i == 0) {
-                for(int j=0; j<randomValue; j++) {
-                    trebleString = trebleString + this.keyMembers.getById(chordPath.get(i).Source).Note + OCTAVE + randomRhytmType;
-                }
-            }
-
-            for(int j=0; j<randomValue; j++) {
-                trebleString = trebleString + this.keyMembers.getById(chordPath.get(i).Target).Note + OCTAVE + randomRhytmType;
-            }
-        }
-
-        return trebleString.trim();
+        return chordPathIds;
     }
 
     private List<IdKeyNote> markFirstNodeOnPath(List<Integer> chordPathIds) {
@@ -151,23 +66,6 @@ public class ChordGraph {
            }
         }
         return nodes;
-    }
-
-    private RenderData saveMidiFile(RenderData renderData, PatternProducer chordPattern, PatternProducer bassPattern, PatternProducer treblePattern, String sessionID) throws IOException {
-        String midiId = UUID.randomUUID().toString();
-        String fileName = String.format("%s$%s.mid", (new Date()).getTime(), midiId);
-        String sessionPath = this.midiDB.createMidiFilePath(sessionID);
-
-        try {
-            //MidiFileManager.savePatternToMidi(pattern, new File(sessionPath + "/" + fileName));
-            MidiFileManager.save(new Player().getSequence(chordPattern, bassPattern, treblePattern), new File(sessionPath + "/" + fileName));
-            renderData.data.MidiURL = String.format("midi/%s/%s", sessionID, midiId);
-        } catch (Exception e){
-            renderData.data.ErrorMessage = "failed to generate Midi data";
-            System.out.println("ERROR: " + e.toString());
-        }
-
-        return renderData;
     }
 }
 
