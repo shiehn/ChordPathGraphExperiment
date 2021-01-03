@@ -95,7 +95,7 @@ export class GraphUI extends React.Component {
 
         const audioPlayer = new Tone.Player(loopSelection).toDestination();
         audioPlayer.set({
-            volume: -20,
+            volume: -30,
         });
 
         this.tonePlayers.push(audioPlayer);
@@ -489,7 +489,7 @@ export class GraphUI extends React.Component {
                 </div>
             </div>
             {
-                this.state.loading ? <div>Loading...</div> : <Graph
+                this.state.loading ? <div></div> : <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                     data={this.state.data}
                     config={this.state.myconfig}
