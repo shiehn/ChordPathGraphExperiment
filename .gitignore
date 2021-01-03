@@ -63,7 +63,10 @@ packages/react-devtools-shell/dist
 packages/react-devtools-scheduling-profiler/dist
 
 output/*
-keypath-client/node_modules
-target/node
+!output/loops/*
+client/node_modules
+target/**
 
-keypath-client/.eslintcache
+client/.eslintcache
+
+.DS_Store
