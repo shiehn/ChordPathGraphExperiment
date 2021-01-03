@@ -36,9 +36,9 @@ public class ChordGraph {
 
         RenderData renderData = new RenderData(nodes, edges, origin, destination, this.keyMembers.getIdToKeyChordLookup(), chordPathIds);
 
-        Pattern chordPattern = this.midi.createChordPattern(chordPath);
-        Pattern bassPattern = this.midi.createBassPattern(chordPath);
-        Pattern treblePattern = this.midi.createTreblePattern(chordPath);
+        Pattern chordPattern = this.midi.createChordPattern(chordPathIds);
+        Pattern bassPattern = this.midi.createBassPattern(chordPathIds);
+        Pattern treblePattern = this.midi.createTreblePattern(chordPathIds);
 
         return this.midi.saveMidiFile(renderData, chordPattern, bassPattern, treblePattern, sessionId);
     }
